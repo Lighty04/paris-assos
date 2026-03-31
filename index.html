@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paris Subventions - Suivi des Contributions Municipales</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #eaeaea;
+        }
+        .header {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 3px solid #e94560;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+        .header p {
+            color: #a0a0a0;
+            font-size: 1.1rem;
+        }
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            padding: 1.5rem;
+            background: rgba(15, 52, 96, 0.5);
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #e94560;
+        }
+        .stat-label {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .search-bar {
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .search-bar input {
+            flex: 1;
+            min-width: 300px;
+            padding: 1rem 1.5rem;
+            border: 2px solid #0f3460;
+            border-radius: 8px;
+            background: #16213e;
+            color: #fff;
+            font-size: 1rem;
+        }
+        .search-bar input:focus {
+            outline: none;
+            border-color: #e94560;
+        }
+        .search-bar select {
+            padding: 1rem 1.5rem;
+            border: 2px solid #0f3460;
+            border-radius: 8px;
+            background: #16213e;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .associations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+        .association-card {
+            background: rgba(22, 33, 62, 0.8);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #0f3460;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .association-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.3);
+            border-color: #e94560;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 0.3rem;
+        }
+        .card-siret {
+            font-size: 0.8rem;
+            color: #a0a0a0;
+            font-family: monospace;
+        }
+        .card-total {
+            background: #e94560;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .card-mission {
+            color: #b8b8b8;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            max-height: 3em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .card-sectors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .sector-tag {
+            background: rgba(233, 69, 96, 0.2);
+            color: #e94560;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+        }
+        .chart-container {
+            height: 150px;
+            margin-top: 1rem;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem;
+        }
+        .modal-content {
+            background: #16213e;
+            border-radius: 16px;
+            max-width: 900px;
+            width: 100%;
+            padding: 2rem;
+            border: 2px solid #0f3460;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #e94560;
+            border: none;
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #0f3460;
+        }
+        .modal-title {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        .modal-section {
+            margin-bottom: 2rem;
+        }
+        .modal-section h3 {
+            color: #e94560;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .detail-item {
+            background: rgba(15, 52, 96, 0.5);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        .detail-label {
+            color: #a0a0a0;
+            font-size: 0.85rem;
+            margin-bottom: 0.3rem;
+        }
+        .detail-value {
+            color: #fff;
+            font-weight: bold;
+        }
+        .board-members {
+            background: rgba(15, 52, 96, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px dashed #0f3460;
+        }
+        .board-placeholder {
+            color: #a0a0a0;
+            text-align: center;
+            padding: 2rem;
+        }
+        .board-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .board-members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .board-member-card {
+            background: rgba(15, 52, 96, 0.5);
+            padding: 1.2rem;
+            border-radius: 8px;
+            border-left: 4px solid #e94560;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .board-member-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(233, 69, 96, 0.2);
+        }
+        .board-member-name {
+            font-weight: bold;
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+        .board-member-role {
+            color: #e94560;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .board-member-note {
+            color: #a0a0a0;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            font-style: italic;
+        }
+        .board-member-source {
+            color: #6b7280;
+            font-size: 0.8rem;
+        }
+        .board-data-source {
+            background: rgba(15, 52, 96, 0.5);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #a0a0a0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .subventions-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .subvention-item {
+            background: rgba(15, 52, 96, 0.3);
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .subvention-year {
+            background: #e94560;
+            color: #fff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        .subvention-amount {
+            font-weight: bold;
+            color: #fff;
+            flex-shrink: 0;
+            margin-left: 1rem;
+        }
+        .subvention-object {
+            flex: 1;
+            margin: 0 1rem;
+            color: #b8b8b8;
+        }
+        /* Loading and pagination styles */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #a0a0a0;
+        }
+        .loading-spinner {
+            border: 3px solid rgba(233, 69, 96, 0.3);
+            border-top: 3px solid #e94560;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding: 1rem;
+        }
+        .pagination button {
+            background: #0f3460;
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        .pagination button:hover:not(:disabled) {
+            background: #e94560;
+        }
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .pagination-info {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+        .error-message {
+            text-align: center;
+            padding: 3rem;
+            color: #e94560;
+        }
+        .error-message button {
+            background: #e94560;
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 1rem;
+            font-size: 1rem;
+        }
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: #a0a0a0;
+        }
+        @media (max-width: 768px) {
+            .associations-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .stats-bar {
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏛️ Paris Subventions</h1>
+        <p>Suivi transparent des contributions municipales aux associations - Identification des potentiels conflits d'intérêts</p>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-value" id="totalAssociations">-</div>
+            <div class="stat-label">Associations</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="totalSubventions">-</div>
+            <div class="stat-label">Subventions</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="totalAmount">-</div>
+            <div class="stat-label">Montant total voté</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="yearRange">-</div>
+            <div class="stat-label">Période couverte</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Rechercher une association, SIRET ou secteur d'activité...">
+            <select id="yearFilter">
+                <option value="">Toutes les années</option>
+            </select>
+            <select id="sectorFilter">
+                <option value="">Tous les secteurs</option>
+            </select>
+        </div>
+
+        <div id="contentArea">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Chargement des données...</p>
+            </div>
+        </div>
+
+        <div class="pagination" id="pagination" style="display: none;">
+            <button id="prevBtn" onclick="changePage(-1)">← Précédent</button>
+            <span class="pagination-info" id="pageInfo"></span>
+            <button id="nextBtn" onclick="changePage(1)">Suivant →</button>
+        </div>
+    </div>
+
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let currentState = {
+            page: 1,
+            perPage: 50,
+            search: '',
+            year: '',
+            sector: '',
+            totalPages: 1,
+            associations: [],
+            isLoading: false
+        };
+
+        // Debounce function for search
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFilters();
+            loadAssociations();
+            loadStats();
+
+            // Event listeners
+            document.getElementById('searchInput').addEventListener('input', 
+                debounce(() => {
+                    currentState.page = 1;
+                    currentState.search = document.getElementById('searchInput').value;
+                    loadAssociations();
+                    loadStats();
+                }, 300)
+            );
+
+            document.getElementById('yearFilter').addEventListener('change', () => {
+                currentState.page = 1;
+                currentState.year = document.getElementById('yearFilter').value;
+                loadAssociations();
+                loadStats();
+            });
+
+            document.getElementById('sectorFilter').addEventListener('change', () => {
+                currentState.page = 1;
+                currentState.sector = document.getElementById('sectorFilter').value;
+                loadAssociations();
+                loadStats();
+            });
+
+            // Close modal on outside click
+            document.getElementById('detailModal').addEventListener('click', function(e) {
+                if (e.target === this) closeModal();
+            });
+
+            // Close modal on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeModal();
+            });
+        });
+
+        async function loadFilters() {
+            try {
+                const response = await fetch('/api/filters');
+                if (!response.ok) throw new Error('Failed to load filters');
+                const data = await response.json();
+
+                // Populate year filter
+                const yearSelect = document.getElementById('yearFilter');
+                yearSelect.innerHTML = '<option value="">Toutes les années</option>';
+                data.years.forEach(year => {
+                    yearSelect.add(new Option(year, year));
+                });
+
+                // Populate sector filter
+                const sectorSelect = document.getElementById('sectorFilter');
+                sectorSelect.innerHTML = '<option value="">Tous les secteurs</option>';
+                data.sectors.forEach(sector => {
+                    sectorSelect.add(new Option(sector, sector));
+                });
+            } catch (error) {
+                console.error('Error loading filters:', error);
+            }
+        }
+
+        async function loadAssociations() {
+            if (currentState.isLoading) return;
+            currentState.isLoading = true;
+
+            const contentArea = document.getElementById('contentArea');
+            contentArea.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Chargement des données...</p>
+                </div>
+            `;
+
+            try {
+                const params = new URLSearchParams({
+                    page: currentState.page,
+                    per_page: currentState.perPage,
+                    search: currentState.search,
+                    year: currentState.year,
+                    sector: currentState.sector
+                });
+
+                const response = await fetch(`/api/associations?${params}`);
+                if (!response.ok) throw new Error('Failed to load associations');
+                const data = await response.json();
+
+                currentState.associations = data.associations;
+                currentState.totalPages = data.pagination.total_pages;
+
+                if (data.associations.length === 0) {
+                    contentArea.innerHTML = `
+                        <div class="no-results">
+                            <p>Aucune association trouvée pour ces critères de recherche.</p>
+                        </div>
+                    `;
+                    document.getElementById('pagination').style.display = 'none';
+                } else {
+                    renderAssociations(data.associations);
+                    updatePagination(data.pagination);
+                }
+            } catch (error) {
+                console.error('Error loading associations:', error);
+                contentArea.innerHTML = `
+                    <div class="error-message">
+                        <p>Erreur lors du chargement des données</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">${error.message}</p>
+                        <button onclick="loadAssociations()">Réessayer</button>
+                    </div>
+                `;
+                document.getElementById('pagination').style.display = 'none';
+            } finally {
+                currentState.isLoading = false;
+            }
+        }
+
+        async function loadStats() {
+            try {
+                const params = new URLSearchParams({
+                    search: currentState.search,
+                    year: currentState.year,
+                    sector: currentState.sector
+                });
+
+                const response = await fetch(`/api/stats?${params}`);
+                if (!response.ok) throw new Error('Failed to load stats');
+                const data = await response.json();
+
+                document.getElementById('totalAssociations').textContent = data.totalAssociations.toLocaleString('fr-FR');
+                document.getElementById('totalSubventions').textContent = data.totalSubventions.toLocaleString('fr-FR');
+                document.getElementById('totalAmount').textContent = formatCurrency(data.totalAmount);
+                document.getElementById('yearRange').textContent = data.yearRange;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('fr-FR', { 
+                style: 'currency', 
+                currency: 'EUR',
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        function getYearlyData(association) {
+            const yearly = {};
+            association.subventions.forEach(sub => {
+                if (!yearly[sub.year]) yearly[sub.year] = 0;
+                yearly[sub.year] += sub.amount;
+            });
+            return yearly;
+        }
+
+        function renderAssociations(associations) {
+            const contentArea = document.getElementById('contentArea');
+            
+            const grid = document.createElement('div');
+            grid.className = 'associations-grid';
+            grid.id = 'associationsGrid';
+
+            associations.forEach((assoc, index) => {
+                const yearlyData = getYearlyData(assoc);
+                const years = Object.keys(yearlyData).sort();
+                const amounts = years.map(y => yearlyData[y]);
+                const chartId = `chart-${currentState.page}-${index}`;
+
+                const card = document.createElement('div');
+                card.className = 'association-card';
+                card.onclick = () => openModal(assoc.siret);
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">${escapeHtml(assoc.name)}</div>
+                            <div class="card-siret">SIRET: ${assoc.siret}</div>
+                        </div>
+                        <div class="card-total">${formatCurrency(assoc.totalAmount)}</div>
+                    </div>
+                    <div class="card-mission">${escapeHtml(assoc.mission)}</div>
+                    <div class="card-sectors">
+                        ${assoc.sectors.slice(0, 3).map(s => `<span class="sector-tag">${escapeHtml(s)}</span>`).join('')}
+                        ${assoc.sectors.length > 3 ? `<span class="sector-tag">+${assoc.sectors.length - 3}</span>` : ''}
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="${chartId}"></canvas>
+                    </div>
+                `;
+                grid.appendChild(card);
+
+                // Render chart after card is added to DOM
+                setTimeout(() => {
+                    const canvas = document.getElementById(chartId);
+                    if (canvas && years.length > 0) {
+                        new Chart(canvas, {
+                            type: 'bar',
+                            data: {
+                                labels: years,
+                                datasets: [{
+                                    label: 'Montant (€)',
+                                    data: amounts,
+                                    backgroundColor: '#e94560',
+                                    borderRadius: 4
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: { legend: { display: false } },
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        ticks: {
+                                            color: '#a0a0a0',
+                                            callback: function(value) {
+                                                return value >= 1000 ? (value/1000) + 'k€' : value + '€';
+                                            }
+                                        },
+                                        grid: { color: '#0f3460' }
+                                    },
+                                    x: {
+                                        ticks: { color: '#a0a0a0' },
+                                        grid: { display: false }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }, 0);
+            });
+
+            contentArea.innerHTML = '';
+            contentArea.appendChild(grid);
+        }
+
+        function updatePagination(pagination) {
+            const paginationEl = document.getElementById('pagination');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageInfo = document.getElementById('pageInfo');
+
+            if (pagination.total_pages <= 1) {
+                paginationEl.style.display = 'none';
+                return;
+            }
+
+            paginationEl.style.display = 'flex';
+            prevBtn.disabled = pagination.page <= 1;
+            nextBtn.disabled = pagination.page >= pagination.total_pages;
+            pageInfo.textContent = `Page ${pagination.page} / ${pagination.total_pages} (${pagination.total.toLocaleString('fr-FR')} résultats)`;
+        }
+
+        function changePage(direction) {
+            const newPage = currentState.page + direction;
+            if (newPage >= 1 && newPage <= currentState.totalPages) {
+                currentState.page = newPage;
+                loadAssociations();
+                // Scroll to top of results
+                document.querySelector('.search-bar').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        async function openModal(siret) {
+            try {
+                const response = await fetch(`/api/association?siret=${encodeURIComponent(siret)}`);
+                if (!response.ok) throw new Error('Failed to load association details');
+                const assoc = await response.json();
+
+                const yearlyData = getYearlyData(assoc);
+                const years = Object.keys(yearlyData).sort();
+                const amounts = years.map(y => yearlyData[y]);
+
+                const modalBody = document.getElementById('modalBody');
+                modalBody.innerHTML = `
+                    <div class="modal-header">
+                        <div class="modal-title">${escapeHtml(assoc.name)}</div>
+                        <div class="card-siret">SIRET: ${assoc.siret}</div>
+                    </div>
+
+                    <div class="modal-section">
+                        <h3>📋 Informations générales</h3>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Secteurs d'activité</div>
+                                <div class="detail-value">${assoc.sectors.join(', ') || 'Non spécifié'}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Montant total reçu</div>
+                                <div class="detail-value" style="color:#e94560">${formatCurrency(assoc.totalAmount)}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Nombre de subventions</div>
+                                <div class="detail-value">${assoc.subventions.length}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Années actives</div>
+                                <div class="detail-value">${years.join(', ') || 'N/A'}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-section">
+                        <h3>📊 Historique des contributions</h3>
+                        <div style="height: 300px; margin-bottom: 1rem;">
+                            <canvas id="modalChart"></canvas>
+                        </div>
+                        <div class="subventions-list">
+                            ${assoc.subventions.sort((a, b) => b.year.localeCompare(a.year)).map(sub => `
+                                <div class="subvention-item">
+                                    <span class="subvention-year">${sub.year}</span>
+                                    <span class="subvention-object">${escapeHtml(sub.object)}</span>
+                                    <span class="subvention-amount">${formatCurrency(sub.amount)}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="modal-section" id="boardMembersSection">
+                        <!-- Board members will be populated dynamically -->
+                    </div>
+                `;
+
+                document.getElementById('detailModal').classList.add('active');
+
+                // Add board members section
+                populateBoardMembers(assoc);
+
+                setTimeout(() => {
+                    new Chart(document.getElementById('modalChart'), {
+                        type: 'line',
+                        data: {
+                            labels: years,
+                            datasets: [{
+                                label: 'Montant des subventions (€)',
+                                data: amounts,
+                                borderColor: '#e94560',
+                                backgroundColor: 'rgba(233, 69, 96, 0.2)',
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        color: '#a0a0a0',
+                                        callback: function(value) {
+                                            return formatCurrency(value);
+                                        }
+                                    },
+                                    grid: { color: '#0f3460' }
+                                },
+                                x: {
+                                    ticks: { color: '#a0a0a0' },
+                                    grid: { display: false }
+                                }
+                            }
+                        }
+                    });
+                }, 100);
+            } catch (error) {
+                console.error('Error loading association details:', error);
+                alert('Erreur lors du chargement des détails de l\'association');
+            }
+        }
+
+        // Board members database (populated from web research)
+        const BOARD_MEMBERS_DB = {
+            "THEATRE MUSICAL DE PARIS": {
+                board_members: [
+                    { name: "Thomas Lauriot dit Prévost", role: "Directeur général", source: "Public records" },
+                    { name: "Conseil d'administration", role: "Instance de gouvernance", source: "Presse" }
+                ],
+                data_source: "Presse, recherche web",
+                last_updated: "2026-03-31",
+                coverage: "partial"
+            },
+            "THEATRE DE LA VILLE": {
+                board_members: [
+                    { name: "Emmanuel Demarcy-Mota", role: "Directeur", source: "Site officiel", note: "En poste depuis septembre 2008" }
+                ],
+                data_source: "Site officiel",
+                last_updated: "2026-03-31",
+                coverage: "partial"
+            },
+            "ASSOCIATION POUR LA GESTION DES OEUVRES SOCIALES DES PERSONNELS DES ADMINISTRATIONS PARISIENNES": {
+                board_members: [
+                    { name: "Jean-Paul Brandela", role: "Président", source: "Site officiel", note: "Depuis octobre 2023" },
+                    { name: "Conseil d'administration paritaire", role: "Instance de gouvernance", source: "Organisme à gestion paritaire" }
+                ],
+                data_source: "Site officiel AGOSPAP",
+                last_updated: "2026-03-31",
+                coverage: "partial"
+            },
+            "FORUM DES IMAGES": {
+                board_members: [
+                    { name: "Marc Tessier", role: "Président du Conseil d'administration", source: "Site officiel" },
+                    { name: "Patrick Sobelman", role: "Vice-président", source: "Site officiel" }
+                ],
+                data_source: "Site officiel",
+                last_updated: "2026-03-31",
+                coverage: "partial"
+            },
+            "ORCHESTRE DE CHAMBRE DE PARIS": {
+                board_members: [
+                    { name: "Brigitte Lefèvre", role: "Présidente du Conseil d'administration", source: "Ministère de la Culture" },
+                    { name: "Frédéric Morando", role: "Directeur général", source: "Ministère de la Culture", note: "Depuis janvier 2026" }
+                ],
+                data_source: "Ministère de la Culture",
+                last_updated: "2026-03-31",
+                coverage: "partial"
+            },
+            "PHILHARMONIE DE PARIS": {
+                board_members: [
+                    { name: "Gwenola Chambon", role: "Présidente du Conseil d'administration", source: "Registre des sociétés" }
+                ],
+                data_source: "Registre des sociétés",
+                last_updated: "2026-03-31",
+                coverage: "partial"
+            },
+            "CROIX ROUGE": {
+                board_members: [
+                    { name: "Caroline Cross", role: "Présidente", source: "Site officiel", note: "Élue en juin 2025" }
+                ],
+                data_source: "Site officiel Croix-Rouge",
+                last_updated: "2026-03-31",
+                coverage: "partial"
+            },
+            "EMMAUS SOLIDARITE": {
+                board_members: [
+                    { name: "Véronique Petit", role: "Directrice des Ressources Humaines", source: "Données publiques" }
+                ],
+                data_source: "Données publiques",
+                last_updated: "2026-03-31",
+                coverage: "partial"
+            }
+        };
+
+        function findBoardMembers(associationName) {
+            // Try exact match first
+            if (BOARD_MEMBERS_DB[associationName]) {
+                return BOARD_MEMBERS_DB[associationName];
+            }
+            
+            // Try case-insensitive partial match
+            const upperName = associationName.toUpperCase();
+            for (const [key, data] of Object.entries(BOARD_MEMBERS_DB)) {
+                if (upperName.includes(key.toUpperCase()) || key.toUpperCase().includes(upperName)) {
+                    return data;
+                }
+            }
+            
+            return null;
+        }
+
+        function populateBoardMembers(association) {
+            const boardSection = document.getElementById('boardMembersSection');
+            const boardData = findBoardMembers(association.name);
+            
+            if (boardData && boardData.board_members && boardData.board_members.length > 0) {
+                const membersHTML = boardData.board_members.map(member => `
+                    <div class="board-member-card">
+                        <div class="board-member-name">${escapeHtml(member.name)}</div>
+                        <div class="board-member-role">${escapeHtml(member.role)}</div>
+                        ${member.note ? `<div class="board-member-note">${escapeHtml(member.note)}</div>` : ''}
+                        <div class="board-member-source">Source: ${escapeHtml(member.source)}</div>
+                    </div>
+                `).join('');
+                
+                boardSection.innerHTML = `
+                    <h3>👥 Membres du Bureau / Conseil d'Administration</h3>
+                    <div class="board-members-grid">
+                        ${membersHTML}
+                    </div>
+                    <div class="board-data-source">
+                        <span>Source: ${escapeHtml(boardData.data_source)}</span>
+                        <span style="margin-left: 1rem;">Mis à jour: ${boardData.last_updated}</span>
+                        <span style="margin-left: 1rem; color: #e94560;">Couverture: ${boardData.coverage === 'complete' ? 'Complète' : 'Partielle'}</span>
+                    </div>
+                `;
+            } else {
+                boardSection.innerHTML = `
+                    <h3>👥 Membres du Bureau / Conseil d'Administration</h3>
+                    <div class="board-members">
+                        <div class="board-placeholder">
+                            <span style="font-size: 2rem;">🔍</span>
+                            <p>Données en cours de recherche</p>
+                            <p style="font-size: 0.9rem; margin-top: 0.5rem; color: #a0a0a0;">
+                                Les informations sur les membres du conseil d'administration sont en cours d'enrichissement.
+                            </p>
+                            <p style="font-size: 0.85rem; margin-top: 0.5rem; color: #e94560;">
+                                Cette section permettra d'identifier les potentiels conflits d'intérêts avec les élus et agents publics.
+                            </p>
+                            <div class="coverage-indicator" style="margin-top: 1rem; padding: 0.5rem; background: rgba(233, 69, 96, 0.1); border-radius: 4px;">
+                                <span style="color: #e94560;">📊 Couverture actuelle: En cours d'enrichissement</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

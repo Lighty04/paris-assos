@@ -1,0 +1,44 @@
+# Paris Associations Website - Git Ignore
+
+# Large data files
+*.json
+!package.json
+!tsconfig.json
+!board_members_report.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Logs
+*.log
+nohup.out
+
+# Environment
+.env
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp files
+*.tmp
+tmp/
+temp/
+EOF
+*.pid
+
+# Backup files
+*.backup
+*.old
+data_backup.json

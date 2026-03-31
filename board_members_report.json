@@ -1,0 +1,118 @@
+{
+  "date": "2026-04-01T00:39:38.073751",
+  "total_associations": 13033,
+  "associations_with_board_data": 58,
+  "associations_with_complete_data": 16,
+  "coverage_percentage": 0.45,
+  "total_board_member_entries": 69,
+  "data_sources": [
+    "Sites officiels",
+    "Presse",
+    "Registres publics",
+    "Ministère de la Culture",
+    "Annuaires entreprises",
+    "Structures organisations"
+  ],
+  "top_associations_with_data": [
+    {
+      "name": "THEATRE MUSICAL DE PARIS",
+      "coverage": "partial",
+      "members_count": 2
+    },
+    {
+      "name": "THEATRE DE LA VILLE",
+      "coverage": "partial",
+      "members_count": 1
+    },
+    {
+      "name": "ASSOCIATION D'ACTION SOCIALE EN FAVEUR DES PERSONNELS DE LA VILLE DE PARIS ET DU DÉPARTEMENT DE PARIS",
+      "coverage": "partial",
+      "members_count": 1
+    },
+    {
+      "name": "ASSOCIATION POUR LA GESTION DES OEUVRES SOCIALES DES PERSONNELS DES ADMINISTRATIONS PARISIENNES AGOSPAP",
+      "coverage": "partial",
+      "members_count": 2
+    },
+    {
+      "name": "ABC PUERICULTURE",
+      "coverage": "minimal",
+      "members_count": 1
+    },
+    {
+      "name": "FORUM DES IMAGES",
+      "coverage": "partial",
+      "members_count": 2
+    },
+    {
+      "name": "ORCHESTRE DE CHAMBRE DE PARIS",
+      "coverage": "partial",
+      "members_count": 2
+    },
+    {
+      "name": "ATELIER PARISIEN D'URBANISME",
+      "coverage": "minimal",
+      "members_count": 1
+    },
+    {
+      "name": "FONDATION OEUVRE DE LA CROIX SAINT-SIMON",
+      "coverage": "minimal",
+      "members_count": 1
+    },
+    {
+      "name": "EMMAUS SOLIDARITE",
+      "coverage": "partial",
+      "members_count": 2
+    },
+    {
+      "name": "LA MAISON KANGOUROU",
+      "coverage": "minimal",
+      "members_count": 1
+    },
+    {
+      "name": "CRESCENDO",
+      "coverage": "minimal",
+      "members_count": 1
+    },
+    {
+      "name": "PARIS ATELIERS",
+      "coverage": "minimal",
+      "members_count": 1
+    },
+    {
+      "name": "PHILHARMONIE DE PARIS",
+      "coverage": "partial",
+      "members_count": 2
+    },
+    {
+      "name": "ASSOCIATION POUR LE SOUTIEN DU THEATRE PRIVE",
+      "coverage": "partial",
+      "members_count": 1
+    },
+    {
+      "name": "OFFICE DU TOURISME ET DES CONGRÈS DE PARIS",
+      "coverage": "minimal",
+      "members_count": 1
+    },
+    {
+      "name": "PARIS AUDIOVISUEL - MAISON EUROPÉENNE DE LA PHOTOGRAPHIE",
+      "coverage": "minimal",
+      "members_count": 1
+    },
+    {
+      "name": "LA MAISON DES BOUT'CHOU",
+      "coverage": "minimal",
+      "members_count": 1
+    },
+    {
+      "name": "ORCHESTRE DE PARIS",
+      "coverage": "minimal",
+      "members_count": 1
+    },
+    {
+      "name": "CROIX ROUGE FRANCAISE (NATIONALE)",
+      "coverage": "partial",
+      "members_count": 2
+    }
+  ]
+}
