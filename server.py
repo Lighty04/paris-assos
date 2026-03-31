@@ -78,6 +78,28 @@ def filter_associations(data, search='', year='', sector=''):
     
     return filtered
 
+def get_last_year_info(assoc):
+    """Get the year and amount from the most recent year with subvention data"""
+    subventions = assoc.get('subventions', [])
+    if not subventions:
+        return {'year': None, 'amount': 0}
+    
+    # Group by year and sum amounts
+    year_totals = {}
+    for sub in subventions:
+        year = sub.get('year', '')
+        if year:
+            if year not in year_totals:
+                year_totals[year] = 0
+            year_totals[year] += sub.get('amount', 0)
+    
+    if not year_totals:
+        return {'year': None, 'amount': 0}
+    
+    # Get the most recent year
+    last_year = max(year_totals.keys())
+    return {'year': last_year, 'amount': year_totals[last_year]}
+
 def sort_associations(data, sort_param=''):
     """Sort associations based on sort parameter"""
     if not sort_param:
@@ -85,12 +107,8 @@ def sort_associations(data, sort_param=''):
     
     def get_last_year_amount(assoc):
         """Get the amount from the most recent year"""
-        subventions = assoc.get('subventions', [])
-        if not subventions:
-            return 0
-        # Sort by year descending and get the amount
-        sorted_subs = sorted(subventions, key=lambda x: x.get('year', ''), reverse=True)
-        return sorted_subs[0].get('amount', 0) if sorted_subs else 0
+        info = get_last_year_info(assoc)
+        return info['amount']
     
     if sort_param == 'total_desc':
         return sorted(data, key=lambda x: x.get('totalAmount', 0), reverse=True)

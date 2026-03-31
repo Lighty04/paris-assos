@@ -139,6 +139,12 @@
             color: #a0a0a0;
             font-family: monospace;
         }
+        .card-totals {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: flex-end;
+        }
         .card-total {
             background: #e94560;
             color: #fff;
@@ -146,6 +152,28 @@
             border-radius: 20px;
             font-weight: bold;
             font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        .card-last-year {
+            background: #0f3460;
+            color: #fff;
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            border: 1px solid #e94560;
+        }
+        .card-amount-label {
+            font-size: 0.65rem;
+            opacity: 0.8;
+            font-weight: normal;
+            margin-bottom: 0.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .card-amount-value {
+            font-weight: bold;
         }
         .card-mission {
             color: #b8b8b8;
@@ -773,6 +801,19 @@
             }
             .conflict-banner {
                 flex-direction: column;
+                text-align: center;
+            }
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .card-totals {
+                align-items: flex-start;
+                width: 100%;
+                margin-top: 1rem;
+            }
+            .card-total, .card-last-year {
+                width: 100%;
                 text-align: center;
             }
         }
@@ -1469,6 +1510,31 @@
             return boardData.board_members.some(member => member.conflictOfInterest);
         }
 
+        // Function to calculate last year subvention data
+        function getLastYearSubvention(assoc) {
+            const subventions = assoc.get('subventions') || assoc.subventions || [];
+            if (!subventions || subventions.length === 0) {
+                return { year: null, amount: 0 };
+            }
+            
+            // Find the most recent year
+            let lastYear = '';
+            let lastAmount = 0;
+            
+            for (const sub of subventions) {
+                const year = sub.year || '';
+                if (year && year.localeCompare(lastYear) > 0) {
+                    lastYear = year;
+                    lastAmount = sub.amount || 0;
+                } else if (year === lastYear) {
+                    // Sum up amounts for the same year
+                    lastAmount += sub.amount || 0;
+                }
+            }
+            
+            return { year: lastYear, amount: lastAmount };
+        }
+
         function renderAssociations(associations) {
             const contentArea = document.getElementById('contentArea');
             
@@ -1482,6 +1548,15 @@
                 const amounts = years.map(y => yearlyData[y]);
                 const chartId = `chart-${currentState.page}-${index}`;
                 const hasConflict = hasConflictOfInterest(assoc.name);
+                
+                // Get last year subvention data
+                const lastYearData = getLastYearSubvention(assoc);
+                const lastYearDisplay = lastYearData.year ? 
+                    `<div class="card-last-year">
+                        <div class="card-amount-label">Dernière année (${lastYearData.year})</div>
+                        <div class="card-amount-value">${formatCurrency(lastYearData.amount)}</div>
+                    </div>` : 
+                    '<div class="card-last-year"><div class="card-amount-label">Dernière année</div><div class="card-amount-value">N/A</div></div>';
 
                 const card = document.createElement('div');
                 card.className = `association-card${hasConflict ? ' has-conflict' : ''}`;
@@ -1493,7 +1568,13 @@
                             <div class="card-title">${escapeHtml(assoc.name)}</div>
                             <div class="card-siret">SIRET: ${assoc.siret}</div>
                         </div>
-                        <div class="card-total">${formatCurrency(assoc.totalAmount)}</div>
+                        <div class="card-totals">
+                            <div class="card-total">
+                                <div class="card-amount-label">Total des subventions</div>
+                                <div class="card-amount-value">${formatCurrency(assoc.totalAmount)}</div>
+                            </div>
+                            ${lastYearDisplay}
+                        </div>
                     </div>
                     <div class="card-mission">${escapeHtml(assoc.mission)}</div>
                     <div class="card-sectors">
