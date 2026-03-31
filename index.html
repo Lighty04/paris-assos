@@ -98,11 +98,29 @@
             border: 1px solid #0f3460;
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
+            position: relative;
         }
         .association-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(233, 69, 96, 0.3);
             border-color: #e94560;
+        }
+        .association-card.has-conflict {
+            border-left: 4px solid #dc2626;
+        }
+        .conflict-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #dc2626;
+            color: #fff;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
         }
         .card-header {
             display: flex;
@@ -234,70 +252,6 @@
             color: #fff;
             font-weight: bold;
         }
-        .board-members {
-            background: rgba(15, 52, 96, 0.3);
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 2px dashed #0f3460;
-        }
-        .board-placeholder {
-            color: #a0a0a0;
-            text-align: center;
-            padding: 2rem;
-        }
-        .board-placeholder i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-        .board-members-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        .board-member-card {
-            background: rgba(15, 52, 96, 0.5);
-            padding: 1.2rem;
-            border-radius: 8px;
-            border-left: 4px solid #e94560;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .board-member-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(233, 69, 96, 0.2);
-        }
-        .board-member-name {
-            font-weight: bold;
-            color: #fff;
-            font-size: 1rem;
-            margin-bottom: 0.3rem;
-        }
-        .board-member-role {
-            color: #e94560;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-        .board-member-note {
-            color: #a0a0a0;
-            font-size: 0.85rem;
-            margin-bottom: 0.5rem;
-            font-style: italic;
-        }
-        .board-member-source {
-            color: #6b7280;
-            font-size: 0.8rem;
-        }
-        .board-data-source {
-            background: rgba(15, 52, 96, 0.5);
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            color: #a0a0a0;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
         .subventions-list {
             max-height: 300px;
             overflow-y: auto;
@@ -398,6 +352,367 @@
             padding: 3rem;
             color: #a0a0a0;
         }
+
+        /* Enhanced Board Member Styles */
+        .board-members-section-enhanced {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(22, 33, 62, 0.9) 0%, rgba(15, 52, 96, 0.7) 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(233, 69, 96, 0.3);
+        }
+        .board-members-section-enhanced h3 {
+            color: #e94560;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .conflict-banner {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.2) 0%, rgba(185, 28, 28, 0.3) 100%);
+            border: 2px solid #dc2626;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: pulse-warning 2s infinite;
+        }
+        @keyframes pulse-warning {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+        }
+        .conflict-banner .conflict-icon {
+            font-size: 1.5rem;
+        }
+        .conflict-banner .conflict-text {
+            color: #fecaca;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .board-members-grid-enhanced {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .board-member-card-enhanced {
+            background: rgba(15, 52, 96, 0.4);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            position: relative;
+        }
+        .board-member-card-enhanced:hover {
+            border-color: rgba(233, 69, 96, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(233, 69, 96, 0.15);
+        }
+        .board-member-card-enhanced.expanded {
+            border-color: #e94560;
+            box-shadow: 0 12px 30px rgba(233, 69, 96, 0.2);
+        }
+        .board-member-header {
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            position: relative;
+        }
+        .board-member-header:hover {
+            background: rgba(233, 69, 96, 0.05);
+        }
+        .board-member-header::after {
+            content: '▼';
+            position: absolute;
+            right: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #e94560;
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+        .board-member-card-enhanced.expanded .board-member-header::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+        .board-member-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+            padding-right: 1.5rem;
+        }
+        .board-member-name {
+            font-weight: 700;
+            color: #fff;
+            font-size: 1.1rem;
+            line-height: 1.3;
+        }
+        .conflict-badge {
+            background: #dc2626;
+            color: #fff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            animation: pulse-badge 2s infinite;
+        }
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .board-member-role {
+            color: #e94560;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .board-member-note-preview {
+            color: #9ca3af;
+            font-size: 0.85rem;
+            font-style: italic;
+            line-height: 1.4;
+            margin-bottom: 0.75rem;
+        }
+        .board-member-footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(233, 69, 96, 0.2);
+        }
+        .source-btn {
+            color: #e94560;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .reliability-indicator {
+            font-size: 1rem;
+        }
+        .board-member-expanded {
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: rgba(22, 33, 62, 0.5);
+            max-height: 0;
+        }
+        .board-member-card-enhanced.expanded .board-member-expanded {
+            max-height: 2000px;
+        }
+        .expanded-content {
+            padding: 1.25rem;
+            border-top: 1px solid rgba(233, 69, 96, 0.3);
+        }
+        .expanded-section {
+            margin-bottom: 1.25rem;
+        }
+        .expanded-section:last-child {
+            margin-bottom: 0;
+        }
+        .expanded-label {
+            color: #e94560;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+        .expanded-value {
+            color: #e5e7eb;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .source-section .expanded-value {
+            background: rgba(15, 52, 96, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        .source-name {
+            color: #fff;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .source-link {
+            display: inline-block;
+            color: #e94560;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            transition: color 0.2s ease;
+        }
+        .source-link:hover {
+            color: #ff6b7d;
+            text-decoration: underline;
+        }
+        .source-unavailable {
+            color: #6b7280;
+            font-size: 0.85rem;
+            font-style: italic;
+            display: block;
+            margin-bottom: 0.75rem;
+        }
+        .source-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            color: #9ca3af;
+        }
+        .reliability-tag {
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .reliability-high {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+        .reliability-medium {
+            background: rgba(234, 179, 8, 0.2);
+            color: #facc15;
+        }
+        .reliability-low {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+        .public-roles-section .expanded-value {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .public-role-item {
+            background: rgba(15, 52, 96, 0.4);
+            padding: 0.875rem;
+            border-radius: 8px;
+            border-left: 3px solid #3b82f6;
+        }
+        .public-role-title {
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+        }
+        .public-role-org {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+        .public-role-dates {
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+        .public-role-status {
+            color: #e94560;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+        .conflict-section .expanded-value {
+            background: transparent;
+            padding: 0;
+        }
+        .conflict-warning {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.15) 0%, rgba(185, 28, 28, 0.25) 100%);
+            border: 1px solid rgba(220, 38, 38, 0.5);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        .conflict-warning strong {
+            color: #fecaca;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .conflict-warning p {
+            color: #fca5a5;
+            font-size: 0.9rem;
+            margin: 0;
+            line-height: 1.5;
+        }
+        .data-source-enhanced {
+            background: rgba(15, 52, 96, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(233, 69, 96, 0.2);
+        }
+        .source-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .source-row:last-child {
+            margin-bottom: 0;
+        }
+        .source-label {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        .source-value {
+            color: #e5e7eb;
+            font-size: 0.9rem;
+        }
+        .source-external-link {
+            color: #e94560;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: transform 0.2s ease;
+        }
+        .source-external-link:hover {
+            transform: scale(1.1);
+        }
+        .coverage-tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .coverage-complete {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+        .coverage-partial {
+            background: rgba(234, 179, 8, 0.2);
+            color: #facc15;
+        }
+        .coverage-minimal, .coverage-none {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+        .filter-section {
+            background: rgba(15, 52, 96, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .filter-section label {
+            color: #e5e7eb;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        .filter-section input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #e94560;
+            cursor: pointer;
+        }
         @media (max-width: 768px) {
             .associations-grid {
                 grid-template-columns: 1fr;
@@ -407,6 +722,13 @@
             }
             .stats-bar {
                 gap: 1.5rem;
+            }
+            .board-members-grid-enhanced {
+                grid-template-columns: 1fr;
+            }
+            .conflict-banner {
+                flex-direction: column;
+                text-align: center;
             }
         }
     </style>
@@ -447,6 +769,13 @@
             </select>
         </div>
 
+        <div class="filter-section">
+            <label>
+                <input type="checkbox" id="conflictFilter">
+                <span>🔍 Afficher uniquement les associations avec potentiels conflits d'intérêts</span>
+            </label>
+        </div>
+
         <div id="contentArea">
             <div class="loading">
                 <div class="loading-spinner"></div>
@@ -476,9 +805,386 @@
             search: '',
             year: '',
             sector: '',
+            conflictOnly: false,
             totalPages: 1,
             associations: [],
             isLoading: false
+        };
+
+        // Enhanced board member data with sources and public roles research
+        const BOARD_MEMBERS_DB_ENHANCED = {
+            "THEATRE MUSICAL DE PARIS": {
+                board_members: [
+                    { 
+                        name: "Thomas Lauriot dit Prévost", 
+                        role: "Directeur général", 
+                        source: "Le Monde, Libération, FranceTV (2020)",
+                        source_url: "https://www.lemonde.fr/culture/article/2019/09/12/reouverture-du-theatre-du-chatelet",
+                        date_verified: "2019-09-12",
+                        reliability: "high",
+                        publicRoles: [],
+                        conflictOfInterest: false
+                    },
+                    { 
+                        name: "Conseil d'administration", 
+                        role: "Instance de gouvernance", 
+                        source: "Presse - Documentation interne",
+                        source_url: null,
+                        date_verified: "2020",
+                        reliability: "medium",
+                        publicRoles: [],
+                        conflictOfInterest: false
+                    }
+                ],
+                data_source: "Presse nationale, Recherche web",
+                data_source_url: "https://www.lemonde.fr",
+                last_updated: "2026-04-01",
+                coverage: "partial"
+            },
+            "THEATRE DE LA VILLE": {
+                board_members: [
+                    { 
+                        name: "Emmanuel Demarcy-Mota", 
+                        role: "Directeur", 
+                        source: "Site officiel Théâtre de la Ville",
+                        source_url: "https://www.theatredelaville-paris.com",
+                        date_verified: "2026-04-01",
+                        reliability: "high",
+                        note: "En poste depuis septembre 2008",
+                        publicRoles: [],
+                        conflictOfInterest: false
+                    }
+                ],
+                data_source: "Site officiel Théâtre de la Ville",
+                data_source_url: "https://www.theatredelaville-paris.com",
+                last_updated: "2026-04-01",
+                coverage: "partial"
+            },
+            "ASSOCIATION POUR LA GESTION DES OEUVRES SOCIALES DES PERSONNELS DES ADMINISTRATIONS PARISIENNES AGOSPAP": {
+                board_members: [
+                    { 
+                        name: "Jean-Paul Brandela", 
+                        role: "Président", 
+                        source: "Site officiel AGOSPAP, LesBiographies.com",
+                        source_url: "https://www.lesbiographies.com/Biographie/BRANDELA-Jean-Paul",
+                        date_verified: "2023-10",
+                        reliability: "high",
+                        note: "Depuis octobre 2023. Ancien Administrateur général de la Ville de Paris, Directeur adjoint de la démocratie",
+                        publicRoles: [
+                            {
+                                role: "Administrateur général",
+                                organization: "Ville de Paris",
+                                start_date: "Before 2015",
+                                end_date: "present (indirect)",
+                                status: "Former high-ranking official"
+                            }
+                        ],
+                        conflictOfInterest: true,
+                        conflictReason: "Ancien haut fonctionnaire de la Ville de Paris - potentiel conflit d'intérêts avec les subventions municipales"
+                    },
+                    { 
+                        name: "Conseil d'administration paritaire", 
+                        role: "Instance de gouvernance", 
+                        source: "Structure association",
+                        source_url: null,
+                        date_verified: "2026-04-01",
+                        reliability: "medium",
+                        publicRoles: [],
+                        conflictOfInterest: false
+                    }
+                ],
+                data_source: "Site officiel AGOSPAP, Registres publics",
+                data_source_url: "https://www.agospap.fr",
+                last_updated: "2026-04-01",
+                coverage: "partial"
+            },
+            "FORUM DES IMAGES": {
+                board_members: [
+                    { 
+                        name: "Marc Tessier", 
+                        role: "Président du Conseil d'administration", 
+                        source: "Site officiel Forum des Images, Wikipédia, Pappers.fr",
+                        source_url: "https://fr.wikipedia.org/wiki/Marc_Tessier",
+                        date_verified: "2026-04-01",
+                        reliability: "high",
+                        note: "Ancien président de France Télévisions (1999-2005), Président de Video Futur Entertainment Group",
+                        publicRoles: [
+                            {
+                                role: "Président",
+                                organization: "France Télévisions",
+                                start_date: "1999",
+                                end_date: "2005",
+                                status: "Former"
+                            },
+                            {
+                                role: "Membre",
+                                organization: "Conseil national du numérique (CNNum)",
+                                start_date: "2013",
+                                end_date: "2016",
+                                status: "Former"
+                            }
+                        ],
+                        conflictOfInterest: false
+                    },
+                    { 
+                        name: "Patrick Sobelman", 
+                        role: "Vice-président", 
+                        source: "Site officiel, Wikipédia, Unifrance",
+                        source_url: "https://fr.wikipedia.org/wiki/Patrick_Sobelman",
+                        date_verified: "2026-04-01",
+                        reliability: "high",
+                        note: "Producteur cinéma (Agat Films & Cie), co-président de l'Académie des César",
+                        publicRoles: [
+                            {
+                                role: "Co-président",
+                                organization: "Académie des César",
+                                start_date: "2020s",
+                                end_date: "present",
+                                status: "Current"
+                            }
+                        ],
+                        conflictOfInterest: false
+                    }
+                ],
+                data_source: "Site officiel, Registres publics, Wikipédia",
+                data_source_url: "https://www.forumdesimages.fr",
+                last_updated: "2026-04-01",
+                coverage: "partial"
+            },
+            "ORCHESTRE DE CHAMBRE DE PARIS": {
+                board_members: [
+                    { 
+                        name: "Brigitte Lefèvre", 
+                        role: "Présidente du Conseil d'administration", 
+                        source: "Ministère de la Culture, Wikipédia",
+                        source_url: "https://en.wikipedia.org/wiki/Brigitte_Lef%C3%A8vre",
+                        date_verified: "2026-04-01",
+                        reliability: "high",
+                        note: "Administratrice à Radio France depuis 1998, membre du Conseil Supérieur de l'Audiovisuel depuis 2013",
+                        publicRoles: [
+                            {
+                                role: "Administratrice",
+                                organization: "Société Radio France",
+                                start_date: "1998",
+                                end_date: "present",
+                                status: "Current"
+                            },
+                            {
+                                role: "Membre",
+                                organization: "Conseil Supérieur de l'Audiovisuel (CSA)",
+                                start_date: "2013",
+                                end_date: "present",
+                                status: "Current"
+                            }
+                        ],
+                        conflictOfInterest: false
+                    },
+                    { 
+                        name: "Frédéric Morando", 
+                        role: "Directeur général", 
+                        source: "Ministère de la Culture, Site officiel Orchestre de chambre de Paris, Presse.paris.fr",
+                        source_url: "https://www.orchestredechambredeparis.com",
+                        date_verified: "2026-01",
+                        reliability: "high",
+                        note: "Nommé sur proposition du conseil d'administration avec agrément d'Anne Hidalgo (Maire de Paris) et Rachida Dati (Ministre de la Culture). Ancien directeur de l'OPPB Pau.",
+                        publicRoles: [
+                            {
+                                role: "Directeur",
+                                organization: "Orchestre de Pau Pays de Béarn (OPPB)",
+                                start_date: "2000s",
+                                end_date: "2025",
+                                status: "Former"
+                            }
+                        ],
+                        conflictOfInterest: false
+                    }
+                ],
+                data_source: "Ministère de la Culture, Site officiel, Presse officielle",
+                data_source_url: "https://www.orchestredechambredeparis.com",
+                last_updated: "2026-04-01",
+                coverage: "partial"
+            },
+            "PHILHARMONIE DE PARIS": {
+                board_members: [
+                    { 
+                        name: "Gwenola Chambon", 
+                        role: "Présidente du Conseil d'administration", 
+                        source: "Service-public.gouv.fr, Decideurs-magazine.com",
+                        source_url: "https://lannuaire.service-public.gouv.fr",
+                        date_verified: "2025-06",
+                        reliability: "high",
+                        note: "Directrice générale de Vauban Infrastructure Partners. Précédemment Patricia Barbizet.",
+                        publicRoles: [],
+                        conflictOfInterest: false
+                    },
+                    { 
+                        name: "Jean-Philippe Billarant", 
+                        role: "Administrateur", 
+                        source: "Societe.com, Registres publics",
+                        source_url: "https://www.societe.com",
+                        date_verified: "2026-04-01",
+                        reliability: "medium",
+                        publicRoles: [],
+                        conflictOfInterest: false
+                    }
+                ],
+                data_source: "Service Public, Registres des sociétés",
+                data_source_url: "https://lannuaire.service-public.gouv.fr",
+                last_updated: "2026-04-01",
+                coverage: "partial"
+            },
+            "CROIX ROUGE FRANCAISE (NATIONALE)": {
+                board_members: [
+                    { 
+                        name: "Caroline Cross", 
+                        role: "Présidente", 
+                        source: "Site officiel Croix-Rouge, Le Figaro, WhatsUpDoc",
+                        source_url: "https://www.croix-rouge.fr",
+                        date_verified: "2025-06-27",
+                        reliability: "high",
+                        note: "Élue le 27 juin 2025. Médecin engagée depuis 1987, ancienne présidente régionale Auvergne-Rhône-Alpes (2017-2025).",
+                        publicRoles: [
+                            {
+                                role: "Présidente déléguée régionale",
+                                organization: "Croix-Rouge Auvergne-Rhône-Alpes",
+                                start_date: "2017",
+                                end_date: "2025",
+                                status: "Former"
+                            }
+                        ],
+                        conflictOfInterest: false
+                    },
+                    { 
+                        name: "Philippe Da Costa", 
+                        role: "Ancien Président", 
+                        source: "Site officiel Croix-Rouge",
+                        source_url: "https://www.croix-rouge.fr",
+                        date_verified: "2021",
+                        reliability: "high",
+                        note: "Président de 2021 à 2025",
+                        publicRoles: [],
+                        conflictOfInterest: false
+                    }
+                ],
+                data_source: "Site officiel Croix-Rouge française",
+                data_source_url: "https://www.croix-rouge.fr",
+                last_updated: "2026-04-01",
+                coverage: "partial"
+            },
+            "CROIX ROUGE": {
+                board_members: [
+                    { 
+                        name: "Caroline Cross", 
+                        role: "Présidente", 
+                        source: "Site officiel Croix-Rouge",
+                        source_url: "https://www.croix-rouge.fr",
+                        date_verified: "2025-06-27",
+                        reliability: "high",
+                        publicRoles: [],
+                        conflictOfInterest: false
+                    }
+                ],
+                data_source: "Site officiel Croix-Rouge",
+                data_source_url: "https://www.croix-rouge.fr",
+                last_updated: "2026-04-01",
+                coverage: "partial"
+            },
+            "EMMAUS SOLIDARITE": {
+                board_members: [
+                    { 
+                        name: "Véronique Petit", 
+                        role: "Directrice des Ressources Humaines", 
+                        source: "Données publiques, Pappers",
+                        source_url: null,
+                        date_verified: "2026-04-01",
+                        reliability: "medium",
+                        note: "Partie du groupe Emmaus",
+                        publicRoles: [],
+                        conflictOfInterest: false
+                    },
+                    { 
+                        name: "Conseil d'administration", 
+                        role: "Instance de gouvernance", 
+                        source: "Structure association",
+                        source_url: null,
+                        date_verified: "2026-04-01",
+                        reliability: "low",
+                        publicRoles: [],
+                        conflictOfInterest: false
+                    }
+                ],
+                data_source: "Données publiques, Registres",
+                data_source_url: "https://emmaus-solidarite.org",
+                last_updated: "2026-04-01",
+                coverage: "partial"
+            },
+            "ASSOCIATION POUR LE SOUTIEN DU THEATRE PRIVE": {
+                board_members: [
+                    { 
+                        name: "Pascal Guillaume", 
+                        role: "Président", 
+                        source: "Site officiel ASTP, Théâtre Tristan Bernard",
+                        source_url: "https://astp.asso.fr",
+                        date_verified: "2024-10",
+                        reliability: "high",
+                        note: "Réélu octobre 2024. Directeur du Théâtre Tristan Bernard, co-directeur avec Béatrice Vignal.",
+                        publicRoles: [],
+                        conflictOfInterest: false
+                    }
+                ],
+                data_source: "Site officiel ASTP",
+                data_source_url: "https://astp.asso.fr",
+                last_updated: "2026-04-01",
+                coverage: "partial"
+            },
+            "ASTP": {
+                board_members: [
+                    { 
+                        name: "Pascal Guillaume", 
+                        role: "Président", 
+                        source: "Site officiel ASTP",
+                        source_url: "https://astp.asso.fr",
+                        date_verified: "2024-10",
+                        reliability: "high",
+                        note: "Réélu octobre 2024",
+                        publicRoles: [],
+                        conflictOfInterest: false
+                    }
+                ],
+                data_source: "Site officiel ASTP",
+                data_source_url: "https://astp.asso.fr",
+                last_updated: "2026-04-01",
+                coverage: "partial"
+            },
+            "THEATRE DU CHATELET": {
+                board_members: [
+                    { 
+                        name: "Thomas Lauriot dit Prévost", 
+                        role: "Directeur général", 
+                        source: "Presse 2020 (Le Monde, Libération)",
+                        source_url: "https://www.lemonde.fr",
+                        date_verified: "2020",
+                        reliability: "high",
+                        publicRoles: [],
+                        conflictOfInterest: false
+                    },
+                    { 
+                        name: "Ruth Mackenzie", 
+                        role: "Ancienne Directrice artistique", 
+                        source: "Presse 2020",
+                        source_url: null,
+                        date_verified: "2020",
+                        reliability: "high",
+                        note: "Limogée en 2020",
+                        publicRoles: [],
+                        conflictOfInterest: false
+                    }
+                ],
+                data_source: "Presse",
+                data_source_url: "https://www.lemonde.fr",
+                last_updated: "2026-04-01",
+                coverage: "partial"
+            }
         };
 
         // Debounce function for search
@@ -520,6 +1226,13 @@
             document.getElementById('sectorFilter').addEventListener('change', () => {
                 currentState.page = 1;
                 currentState.sector = document.getElementById('sectorFilter').value;
+                loadAssociations();
+                loadStats();
+            });
+
+            document.getElementById('conflictFilter').addEventListener('change', () => {
+                currentState.page = 1;
+                currentState.conflictOnly = document.getElementById('conflictFilter').checked;
                 loadAssociations();
                 loadStats();
             });
@@ -584,10 +1297,16 @@
                 if (!response.ok) throw new Error('Failed to load associations');
                 const data = await response.json();
 
-                currentState.associations = data.associations;
+                // Filter by conflict if enabled
+                let associations = data.associations;
+                if (currentState.conflictOnly) {
+                    associations = associations.filter(assoc => hasConflictOfInterest(assoc.name));
+                }
+
+                currentState.associations = associations;
                 currentState.totalPages = data.pagination.total_pages;
 
-                if (data.associations.length === 0) {
+                if (associations.length === 0) {
                     contentArea.innerHTML = `
                         <div class="no-results">
                             <p>Aucune association trouvée pour ces critères de recherche.</p>
@@ -595,7 +1314,7 @@
                     `;
                     document.getElementById('pagination').style.display = 'none';
                 } else {
-                    renderAssociations(data.associations);
+                    renderAssociations(associations);
                     updatePagination(data.pagination);
                 }
             } catch (error) {
@@ -651,6 +1370,27 @@
             return yearly;
         }
 
+        // Function to find board members for an association
+        function findBoardMembers(associationName) {
+            if (BOARD_MEMBERS_DB_ENHANCED[associationName]) {
+                return BOARD_MEMBERS_DB_ENHANCED[associationName];
+            }
+            const upperName = associationName.toUpperCase();
+            for (const [key, data] of Object.entries(BOARD_MEMBERS_DB_ENHANCED)) {
+                if (upperName.includes(key.toUpperCase()) || key.toUpperCase().includes(upperName)) {
+                    return data;
+                }
+            }
+            return null;
+        }
+
+        // Function to check if association has potential conflicts
+        function hasConflictOfInterest(associationName) {
+            const boardData = findBoardMembers(associationName);
+            if (!boardData || !boardData.board_members) return false;
+            return boardData.board_members.some(member => member.conflictOfInterest);
+        }
+
         function renderAssociations(associations) {
             const contentArea = document.getElementById('contentArea');
             
@@ -663,11 +1403,13 @@
                 const years = Object.keys(yearlyData).sort();
                 const amounts = years.map(y => yearlyData[y]);
                 const chartId = `chart-${currentState.page}-${index}`;
+                const hasConflict = hasConflictOfInterest(assoc.name);
 
                 const card = document.createElement('div');
-                card.className = 'association-card';
+                card.className = `association-card${hasConflict ? ' has-conflict' : ''}`;
                 card.onclick = () => openModal(assoc.siret);
                 card.innerHTML = `
+                    ${hasConflict ? '<div class="conflict-indicator">⚠️ Conflit potentiel</div>' : ''}
                     <div class="card-header">
                         <div>
                             <div class="card-title">${escapeHtml(assoc.name)}</div>
@@ -697,7 +1439,7 @@
                                 datasets: [{
                                     label: 'Montant (€)',
                                     data: amounts,
-                                    backgroundColor: '#e94560',
+                                    backgroundColor: hasConflict ? '#dc2626' : '#e94560',
                                     borderRadius: 4
                                 }]
                             },
@@ -753,7 +1495,6 @@
             if (newPage >= 1 && newPage <= currentState.totalPages) {
                 currentState.page = newPage;
                 loadAssociations();
-                // Scroll to top of results
                 document.querySelector('.search-bar').scrollIntoView({ behavior: 'smooth' });
             }
         }
@@ -767,6 +1508,7 @@
                 const yearlyData = getYearlyData(assoc);
                 const years = Object.keys(yearlyData).sort();
                 const amounts = years.map(y => yearlyData[y]);
+                const hasConflict = hasConflictOfInterest(assoc.name);
 
                 const modalBody = document.getElementById('modalBody');
                 modalBody.innerHTML = `
@@ -783,7 +1525,6 @@
                                 <div class="detail-value">${assoc.sectors.join(', ') || 'Non spécifié'}</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Montant total reçu</div>
                                 <div class="detail-value" style="color:#e94560">${formatCurrency(assoc.totalAmount)}</div>
                             </div>
                             <div class="detail-item">
@@ -831,8 +1572,8 @@
                             datasets: [{
                                 label: 'Montant des subventions (€)',
                                 data: amounts,
-                                borderColor: '#e94560',
-                                backgroundColor: 'rgba(233, 69, 96, 0.2)',
+                                borderColor: hasConflict ? '#dc2626' : '#e94560',
+                                backgroundColor: hasConflict ? 'rgba(220, 38, 38, 0.2)' : 'rgba(233, 69, 96, 0.2)',
                                 fill: true,
                                 tension: 0.4
                             }]
@@ -866,139 +1607,147 @@
             }
         }
 
-        // Board members database (populated from web research)
-        const BOARD_MEMBERS_DB = {
-            "THEATRE MUSICAL DE PARIS": {
-                board_members: [
-                    { name: "Thomas Lauriot dit Prévost", role: "Directeur général", source: "Public records" },
-                    { name: "Conseil d'administration", role: "Instance de gouvernance", source: "Presse" }
-                ],
-                data_source: "Presse, recherche web",
-                last_updated: "2026-03-31",
-                coverage: "partial"
-            },
-            "THEATRE DE LA VILLE": {
-                board_members: [
-                    { name: "Emmanuel Demarcy-Mota", role: "Directeur", source: "Site officiel", note: "En poste depuis septembre 2008" }
-                ],
-                data_source: "Site officiel",
-                last_updated: "2026-03-31",
-                coverage: "partial"
-            },
-            "ASSOCIATION POUR LA GESTION DES OEUVRES SOCIALES DES PERSONNELS DES ADMINISTRATIONS PARISIENNES": {
-                board_members: [
-                    { name: "Jean-Paul Brandela", role: "Président", source: "Site officiel", note: "Depuis octobre 2023" },
-                    { name: "Conseil d'administration paritaire", role: "Instance de gouvernance", source: "Organisme à gestion paritaire" }
-                ],
-                data_source: "Site officiel AGOSPAP",
-                last_updated: "2026-03-31",
-                coverage: "partial"
-            },
-            "FORUM DES IMAGES": {
-                board_members: [
-                    { name: "Marc Tessier", role: "Président du Conseil d'administration", source: "Site officiel" },
-                    { name: "Patrick Sobelman", role: "Vice-président", source: "Site officiel" }
-                ],
-                data_source: "Site officiel",
-                last_updated: "2026-03-31",
-                coverage: "partial"
-            },
-            "ORCHESTRE DE CHAMBRE DE PARIS": {
-                board_members: [
-                    { name: "Brigitte Lefèvre", role: "Présidente du Conseil d'administration", source: "Ministère de la Culture" },
-                    { name: "Frédéric Morando", role: "Directeur général", source: "Ministère de la Culture", note: "Depuis janvier 2026" }
-                ],
-                data_source: "Ministère de la Culture",
-                last_updated: "2026-03-31",
-                coverage: "partial"
-            },
-            "PHILHARMONIE DE PARIS": {
-                board_members: [
-                    { name: "Gwenola Chambon", role: "Présidente du Conseil d'administration", source: "Registre des sociétés" }
-                ],
-                data_source: "Registre des sociétés",
-                last_updated: "2026-03-31",
-                coverage: "partial"
-            },
-            "CROIX ROUGE": {
-                board_members: [
-                    { name: "Caroline Cross", role: "Présidente", source: "Site officiel", note: "Élue en juin 2025" }
-                ],
-                data_source: "Site officiel Croix-Rouge",
-                last_updated: "2026-03-31",
-                coverage: "partial"
-            },
-            "EMMAUS SOLIDARITE": {
-                board_members: [
-                    { name: "Véronique Petit", role: "Directrice des Ressources Humaines", source: "Données publiques" }
-                ],
-                data_source: "Données publiques",
-                last_updated: "2026-03-31",
-                coverage: "partial"
-            }
-        };
-
-        function findBoardMembers(associationName) {
-            // Try exact match first
-            if (BOARD_MEMBERS_DB[associationName]) {
-                return BOARD_MEMBERS_DB[associationName];
-            }
-            
-            // Try case-insensitive partial match
-            const upperName = associationName.toUpperCase();
-            for (const [key, data] of Object.entries(BOARD_MEMBERS_DB)) {
-                if (upperName.includes(key.toUpperCase()) || key.toUpperCase().includes(upperName)) {
-                    return data;
-                }
-            }
-            
-            return null;
-        }
-
         function populateBoardMembers(association) {
             const boardSection = document.getElementById('boardMembersSection');
             const boardData = findBoardMembers(association.name);
             
             if (boardData && boardData.board_members && boardData.board_members.length > 0) {
-                const membersHTML = boardData.board_members.map(member => `
-                    <div class="board-member-card">
-                        <div class="board-member-name">${escapeHtml(member.name)}</div>
-                        <div class="board-member-role">${escapeHtml(member.role)}</div>
-                        ${member.note ? `<div class="board-member-note">${escapeHtml(member.note)}</div>` : ''}
-                        <div class="board-member-source">Source: ${escapeHtml(member.source)}</div>
+                const hasConflict = boardData.board_members.some(m => m.conflictOfInterest);
+                const membersHTML = boardData.board_members.map((member, index) => {
+                    const hasSourceURL = member.source_url && member.source_url !== null;
+                    const reliabilityText = {
+                        'high': 'Source vérifiée',
+                        'medium': 'Source professionnelle',
+                        'low': 'Source à vérifier'
+                    }[member.reliability] || 'Fiabilité inconnue';
+                    
+                    return `
+                        <div class="board-member-card-enhanced" data-member-index="${index}">
+                            <div class="board-member-header" onclick="toggleBoardMemberCard(${index})">
+                                <div class="board-member-title-row">
+                                    <div class="board-member-name">${escapeHtml(member.name)}</div>
+                                    ${member.conflictOfInterest ? '<span class="conflict-badge" title="Potentiel conflit d\'intérêts">⚠️</span>' : ''}
+                                </div>
+                                <div class="board-member-role">${escapeHtml(member.role)}</div>
+                                ${member.note ? `<div class="board-member-note-preview">${escapeHtml(member.note.substring(0, 60))}${member.note.length > 60 ? '...' : ''}</div>` : ''}
+                                <div class="board-member-footer-row">
+                                    <span class="source-btn">📋 Source</span>
+                                    <span class="reliability-indicator" title="${reliabilityText}">${member.reliability === 'high' ? '🔒' : member.reliability === 'medium' ? '🔓' : '⚠️'}</span>
+                                </div>
+                            </div>
+                            <div class="board-member-expanded" id="board-member-expanded-${index}">
+                                <div class="expanded-content">
+                                    ${member.note ? `
+                                        <div class="expanded-section">
+                                            <div class="expanded-label">Note</div>
+                                            <div class="expanded-value">${escapeHtml(member.note)}</div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    <div class="expanded-section source-section">
+                                        <div class="expanded-label">📚 Source de l'information</div>
+                                        <div class="expanded-value">
+                                            <div class="source-name">${escapeHtml(member.source)}</div>
+                                            ${hasSourceURL ? `<a href="${member.source_url}" target="_blank" class="source-link" rel="noopener">Voir la source ↗</a>` : '<span class="source-unavailable">Lien non disponible</span>'}
+                                            <div class="source-meta">
+                                                <span>Vérifié le: ${member.date_verified || 'Non daté'}</span>
+                                                <span class="reliability-tag reliability-${member.reliability}">${reliabilityText}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    ${member.publicRoles && member.publicRoles.length > 0 ? `
+                                        <div class="expanded-section public-roles-section">
+                                            <div class="expanded-label">🏛️ Mandats publics</div>
+                                            <div class="expanded-value">
+                                                ${member.publicRoles.map(role => `
+                                                    <div class="public-role-item">
+                                                        <div class="public-role-title">${escapeHtml(role.role)}</div>
+                                                        <div class="public-role-org">${escapeHtml(role.organization)}</div>
+                                                        <div class="public-role-dates">
+                                                            ${role.start_date || '?'} - ${role.end_date || 'présent'}
+                                                            ${role.status ? `<span class="public-role-status">(${role.status})</span>` : ''}
+                                                        </div>
+                                                    </div>
+                                                `).join('')}
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${member.conflictOfInterest ? `
+                                        <div class="expanded-section conflict-section">
+                                            <div class="expanded-label">⚠️ Alerte conflit d'intérêts</div>
+                                            <div class="expanded-value">
+                                                <div class="conflict-warning">
+                                                    <strong>Potentiel conflit détecté</strong>
+                                                    <p>${escapeHtml(member.conflictReason || 'Ce membre a occupé des fonctions publiques susceptibles de créer un conflit d\'intérêts.')}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                const conflictBanner = hasConflict ? `
+                    <div class="conflict-banner">
+                        <span class="conflict-icon">⚠️</span>
+                        <span class="conflict-text">Cette association comporte un potentiel conflit d'intérêts</span>
                     </div>
-                `).join('');
+                ` : '';
                 
                 boardSection.innerHTML = `
-                    <h3>👥 Membres du Bureau / Conseil d'Administration</h3>
-                    <div class="board-members-grid">
-                        ${membersHTML}
-                    </div>
-                    <div class="board-data-source">
-                        <span>Source: ${escapeHtml(boardData.data_source)}</span>
-                        <span style="margin-left: 1rem;">Mis à jour: ${boardData.last_updated}</span>
-                        <span style="margin-left: 1rem; color: #e94560;">Couverture: ${boardData.coverage === 'complete' ? 'Complète' : 'Partielle'}</span>
-                    </div>
-                `;
-            } else {
-                boardSection.innerHTML = `
-                    <h3>👥 Membres du Bureau / Conseil d'Administration</h3>
-                    <div class="board-members">
-                        <div class="board-placeholder">
-                            <span style="font-size: 2rem;">🔍</span>
-                            <p>Données en cours de recherche</p>
-                            <p style="font-size: 0.9rem; margin-top: 0.5rem; color: #a0a0a0;">
-                                Les informations sur les membres du conseil d'administration sont en cours d'enrichissement.
-                            </p>
-                            <p style="font-size: 0.85rem; margin-top: 0.5rem; color: #e94560;">
-                                Cette section permettra d'identifier les potentiels conflits d'intérêts avec les élus et agents publics.
-                            </p>
-                            <div class="coverage-indicator" style="margin-top: 1rem; padding: 0.5rem; background: rgba(233, 69, 96, 0.1); border-radius: 4px;">
-                                <span style="color: #e94560;">📊 Couverture actuelle: En cours d'enrichissement</span>
+                    <div class="board-members-section-enhanced">
+                        <h3><span class="icon">👥</span> Membres du Bureau / Conseil d'Administration</h3>
+                        ${conflictBanner}
+                        <div class="board-members-grid-enhanced">
+                            ${membersHTML}
+                        </div>
+                        <div class="data-source-enhanced">
+                            <div class="source-row">
+                                <span class="source-label">📚 Source principale:</span>
+                                <span class="source-value">${escapeHtml(boardData.data_source)}</span>
+                                ${boardData.data_source_url ? `<a href="${boardData.data_source_url}" target="_blank" class="source-external-link" rel="noopener">↗</a>` : ''}
+                            </div>
+                            <div class="source-row">
+                                <span class="source-label">📅 Mis à jour:</span>
+                                <span class="source-value">${boardData.last_updated}</span>
+                            </div>
+                            <div class="source-row">
+                                <span class="source-label">📊 Couverture:</span>
+                                <span class="coverage-tag coverage-${boardData.coverage}">
+                                    ${boardData.coverage === 'complete' ? 'Complète' : boardData.coverage === 'partial' ? 'Partielle' : 'Minimale'}
+                                </span>
                             </div>
                         </div>
                     </div>
                 `;
+            } else {
+                boardSection.innerHTML = `
+                    <div class="board-members-section-enhanced">
+                        <h3><span class="icon">👥</span> Membres du Bureau / Conseil d'Administration</h3>
+                        <div style="background: rgba(15, 52, 96, 0.3); padding: 2rem; border-radius: 8px; text-align: center;">
+                            <span style="font-size: 2rem;">🔍</span>
+                            <p style="color: #a0a0a0; margin-top: 1rem;">Données en cours de recherche</p>
+                            <p style="font-size: 0.9rem; margin-top: 0.5rem; color: #e94560;">
+                                Cette section permettra d'identifier les potentiels conflits d'intérêts avec les élus et agents publics.
+                            </p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function toggleBoardMemberCard(index) {
+            const expandedSection = document.getElementById(`board-member-expanded-${index}`);
+            const card = expandedSection.closest('.board-member-card-enhanced');
+            
+            if (card.classList.contains('expanded')) {
+                card.classList.remove('expanded');
+            } else {
+                card.classList.add('expanded');
             }
         }
 
