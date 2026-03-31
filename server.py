@@ -78,6 +78,35 @@ def filter_associations(data, search='', year='', sector=''):
     
     return filtered
 
+def sort_associations(data, sort_param=''):
+    """Sort associations based on sort parameter"""
+    if not sort_param:
+        return data
+    
+    def get_last_year_amount(assoc):
+        """Get the amount from the most recent year"""
+        subventions = assoc.get('subventions', [])
+        if not subventions:
+            return 0
+        # Sort by year descending and get the amount
+        sorted_subs = sorted(subventions, key=lambda x: x.get('year', ''), reverse=True)
+        return sorted_subs[0].get('amount', 0) if sorted_subs else 0
+    
+    if sort_param == 'total_desc':
+        return sorted(data, key=lambda x: x.get('totalAmount', 0), reverse=True)
+    elif sort_param == 'total_asc':
+        return sorted(data, key=lambda x: x.get('totalAmount', 0))
+    elif sort_param == 'lastYear_desc':
+        return sorted(data, key=get_last_year_amount, reverse=True)
+    elif sort_param == 'lastYear_asc':
+        return sorted(data, key=get_last_year_amount)
+    elif sort_param == 'name_asc':
+        return sorted(data, key=lambda x: x.get('name', '').lower())
+    elif sort_param == 'name_desc':
+        return sorted(data, key=lambda x: x.get('name', '').lower(), reverse=True)
+    else:
+        return data
+
 def get_stats(data):
     """Calculate statistics"""
     total_assoc = len(data)
@@ -129,9 +158,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             search = query.get('search', [''])[0]
             year = query.get('year', [''])[0]
             sector = query.get('sector', [''])[0]
+            sort = query.get('sort', [''])[0]
             
             # Filter data
             filtered = filter_associations(data, search, year, sector)
+            
+            # Sort data
+            filtered = sort_associations(filtered, sort)
             
             # Paginate
             total = len(filtered)

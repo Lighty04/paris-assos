@@ -713,6 +713,51 @@
             accent-color: #e94560;
             cursor: pointer;
         }
+        .sort-section {
+            background: rgba(15, 52, 96, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .sort-section label {
+            color: #e5e7eb;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .sort-section select {
+            padding: 0.75rem 1rem;
+            border: 2px solid #0f3460;
+            border-radius: 8px;
+            background: #16213e;
+            color: #fff;
+            font-size: 0.95rem;
+            cursor: pointer;
+            min-width: 250px;
+        }
+        .sort-section select:focus {
+            outline: none;
+            border-color: #e94560;
+        }
+        .sort-indicator {
+            color: #e94560;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .sort-indicator::before {
+            content: '↕️';
+        }
+        .association-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+        }
+        .associations-grid.sorting .association-card {
+            opacity: 0.7;
+        }
         @media (max-width: 768px) {
             .associations-grid {
                 grid-template-columns: 1fr;
@@ -776,6 +821,20 @@
             </label>
         </div>
 
+        <div class="sort-section">
+            <label for="sortFilter">📊 Trier par:</label>
+            <select id="sortFilter">
+                <option value="">Défaut</option>
+                <option value="total_desc">💰 Montant total (décroissant)</option>
+                <option value="total_asc">💰 Montant total (croissant)</option>
+                <option value="lastYear_desc">📅 Dernière année (décroissant)</option>
+                <option value="lastYear_asc">📅 Dernière année (croissant)</option>
+                <option value="name_asc">🔤 Nom (A-Z)</option>
+                <option value="name_desc">🔤 Nom (Z-A)</option>
+            </select>
+            <span class="sort-indicator" id="sortIndicator" style="display: none;"></span>
+        </div>
+
         <div id="contentArea">
             <div class="loading">
                 <div class="loading-spinner"></div>
@@ -805,10 +864,21 @@
             search: '',
             year: '',
             sector: '',
+            sort: '',
             conflictOnly: false,
             totalPages: 1,
             associations: [],
             isLoading: false
+        };
+
+        // Sort labels for indicator
+        const sortLabels = {
+            'total_desc': 'Montant total ↓',
+            'total_asc': 'Montant total ↑',
+            'lastYear_desc': 'Dernière année ↓',
+            'lastYear_asc': 'Dernière année ↑',
+            'name_asc': 'Nom A-Z',
+            'name_desc': 'Nom Z-A'
         };
 
         // Enhanced board member data with sources and public roles research
@@ -1237,6 +1307,13 @@
                 loadStats();
             });
 
+            document.getElementById('sortFilter').addEventListener('change', () => {
+                currentState.page = 1;
+                currentState.sort = document.getElementById('sortFilter').value;
+                updateSortIndicator();
+                loadAssociations();
+            });
+
             // Close modal on outside click
             document.getElementById('detailModal').addEventListener('click', function(e) {
                 if (e.target === this) closeModal();
@@ -1290,7 +1367,8 @@
                     per_page: currentState.perPage,
                     search: currentState.search,
                     year: currentState.year,
-                    sector: currentState.sector
+                    sector: currentState.sector,
+                    sort: currentState.sort
                 });
 
                 const response = await fetch(`/api/associations?${params}`);
@@ -1753,6 +1831,16 @@
 
         function closeModal() {
             document.getElementById('detailModal').classList.remove('active');
+        }
+
+        function updateSortIndicator() {
+            const indicator = document.getElementById('sortIndicator');
+            if (currentState.sort && sortLabels[currentState.sort]) {
+                indicator.textContent = `Trié par: ${sortLabels[currentState.sort]}`;
+                indicator.style.display = 'flex';
+            } else {
+                indicator.style.display = 'none';
+            }
         }
 
         function escapeHtml(text) {
