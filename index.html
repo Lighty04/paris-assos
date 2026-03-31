@@ -1512,7 +1512,7 @@
 
         // Function to calculate last year subvention data
         function getLastYearSubvention(assoc) {
-            const subventions = assoc.get('subventions') || assoc.subventions || [];
+            const subventions = assoc.subventions || [];
             if (!subventions || subventions.length === 0) {
                 return { year: null, amount: 0 };
             }
