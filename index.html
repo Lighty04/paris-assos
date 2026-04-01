@@ -1125,28 +1125,55 @@
             "THEATRE MUSICAL DE PARIS": {
                 board_members: [
                     { 
-                        name: "Thomas Lauriot dit Prévost", 
-                        role: "Directeur général", 
-                        source: "Le Monde, Libération, FranceTV (2020)",
-                        source_url: "https://www.lemonde.fr/culture/article/2019/09/12/reouverture-du-theatre-du-chatelet",
-                        date_verified: "2019-09-12",
+                        name: "Sébastien Bazin", 
+                        role: "Président du Conseil d'administration", 
+                        source: "Le Figaro, Presse - Délibérations A06",
+                        source_url: "https://www.lefigaro.fr",
+                        date_verified: "2020-08-28",
                         reliability: "high",
-                        publicRoles: [],
-                        conflictOfInterest: false
+                        note: "Conflit documenté avec Christophe Girard (ancien adjoint à la Culture) - 'bras de fer' selon Le Figaro 28/08/2020. Subventions: €200.9M total (2013-2024).",
+                        publicRoles: [
+                            {
+                                role: "Président CA",
+                                organization: "Théâtre du Châtelet",
+                                start_date: "2019",
+                                end_date: "present",
+                                status: "Current"
+                            }
+                        ],
+                        conflictOfInterest: true,
+                        conflictReason: "Conflit d'intérêts documenté avec Christophe Girard (ancien adjoint à la Culture de la Ville de Paris). Article L.2131-11 CGCT - subventions illégales si élu conflicté a participé au vote. Subventions reçues: €200.9M"
                     },
                     { 
-                        name: "Conseil d'administration", 
-                        role: "Instance de gouvernance", 
-                        source: "Presse - Documentation interne",
-                        source_url: null,
-                        date_verified: "2020",
-                        reliability: "medium",
-                        publicRoles: [],
-                        conflictOfInterest: false
+                        name: "Christophe Girard", 
+                        role: "Ancien adjoint à la Culture - Influence politique", 
+                        source: "Le Figaro 28/08/2020, CRC oct 2023",
+                        source_url: "https://www.lefigaro.fr",
+                        date_verified: "2020-08-28",
+                        reliability: "high",
+                        note: "Ancien adjoint Culture Ville de Paris (jusqu'en 2020). 'Bras de fer' avec président CA Sébastien Bazin. Multiple CA: Centquatre (président), Paris Musées (VP), Centre Pompidou (membre). Démission 2020 affaire Matzneff.",
+                        publicRoles: [
+                            {
+                                role: "Adjoint à la Culture",
+                                organization: "Ville de Paris",
+                                start_date: "Before 2015",
+                                end_date: "2020",
+                                status: "Former high-ranking official"
+                            },
+                            {
+                                role: "Vice-Président",
+                                organization: "Paris Musées",
+                                start_date: "2014",
+                                end_date: "2020",
+                                status: "Former"
+                            }
+                        ],
+                        conflictOfInterest: true,
+                        conflictReason: "Ancien adjoint à la Culture de la Ville de Paris. Article L.2131-11 CGCT interdit aux élus de voter des subventions à des associations où ils siègent au CA. Subventions Théâtre du Châtelet: €14.9M (2022), €11.7M (2017). Total: €200.9M"
                     }
                 ],
-                data_source: "Presse nationale, Recherche web",
-                data_source_url: "https://www.lemonde.fr",
+                data_source: "Le Figaro, CRC oct 2023, A06 Délibérations",
+                data_source_url: "https://www.lefigaro.fr",
                 last_updated: "2026-04-01",
                 coverage: "partial"
             },
@@ -1210,26 +1237,46 @@
             "FORUM DES IMAGES": {
                 board_members: [
                     { 
+                        name: "Carine Rolland", 
+                        role: "Membre de droit du Conseil d'administration", 
+                        source: "Site officiel Forum des Images, Inspection Générale n°08-13",
+                        source_url: "https://www.forumdesimages.fr/le-forum/presentation/equipe-et-conseil-dadministration",
+                        date_verified: "2026-04-01",
+                        reliability: "high",
+                        note: "Adjointe à la maire de Paris en charge de la Culture (2020-2023). Membre de droit (ex-officio) du CA Forum des Images. Subventions: €83.8M total. Inspection Générale: 'subventionné à 100%'",
+                        publicRoles: [
+                            {
+                                role: "Adjointe à la Culture",
+                                organization: "Ville de Paris",
+                                start_date: "2020",
+                                end_date: "2023",
+                                status: "Former official"
+                            },
+                            {
+                                role: "Présidente",
+                                organization: "Paris Musées",
+                                start_date: "2020",
+                                end_date: "2023",
+                                status: "Former"
+                            }
+                        ],
+                        conflictOfInterest: true,
+                        conflictReason: "Membre de droit du Conseil d'Administration du Forum des Images pendant son mandat d'Adjointe à la Culture (2020-2023). Article L.2131-11 CGCT: Sont illégales les délibérations auxquelles ont pris part des membres du conseil intéressés à l'affaire. Subventions reçues: €83.8M (subventionné à 100% par la Ville)."
+                    },
+                    { 
                         name: "Marc Tessier", 
                         role: "Président du Conseil d'administration", 
-                        source: "Site officiel Forum des Images, Wikipédia, Pappers.fr",
+                        source: "Site officiel Forum des Images, Wikipédia",
                         source_url: "https://fr.wikipedia.org/wiki/Marc_Tessier",
                         date_verified: "2026-04-01",
                         reliability: "high",
-                        note: "Ancien président de France Télévisions (1999-2005), Président de Video Futur Entertainment Group",
+                        note: "Ancien président de France Télévisions (1999-2005)",
                         publicRoles: [
                             {
                                 role: "Président",
                                 organization: "France Télévisions",
                                 start_date: "1999",
                                 end_date: "2005",
-                                status: "Former"
-                            },
-                            {
-                                role: "Membre",
-                                organization: "Conseil national du numérique (CNNum)",
-                                start_date: "2013",
-                                end_date: "2016",
                                 status: "Former"
                             }
                         ],
@@ -1238,27 +1285,19 @@
                     { 
                         name: "Patrick Sobelman", 
                         role: "Vice-président", 
-                        source: "Site officiel, Wikipédia, Unifrance",
-                        source_url: "https://fr.wikipedia.org/wiki/Patrick_Sobelman",
+                        source: "Site officiel Forum des Images",
+                        source_url: "https://www.forumdesimages.fr",
                         date_verified: "2026-04-01",
                         reliability: "high",
-                        note: "Producteur cinéma (Agat Films & Cie), co-président de l'Académie des César",
-                        publicRoles: [
-                            {
-                                role: "Co-président",
-                                organization: "Académie des César",
-                                start_date: "2020s",
-                                end_date: "present",
-                                status: "Current"
-                            }
-                        ],
+                        note: "Producteur cinéma, co-président Académie des César",
+                        publicRoles: [],
                         conflictOfInterest: false
                     }
                 ],
-                data_source: "Site officiel, Registres publics, Wikipédia",
-                data_source_url: "https://www.forumdesimages.fr",
+                data_source: "Site officiel Forum des Images, A06 Délibération 2017 DAC 855",
+                data_source_url: "https://www.forumdesimages.fr/le-forum/presentation/equipe-et-conseil-dadministration",
                 last_updated: "2026-04-01",
-                coverage: "partial"
+                coverage: "complete"
             },
             "ORCHESTRE DE CHAMBRE DE PARIS": {
                 board_members: [
@@ -1316,13 +1355,47 @@
             "PHILHARMONIE DE PARIS": {
                 board_members: [
                     { 
+                        name: "Bruno Julliard", 
+                        role: "Ancien Président du Conseil d'administration", 
+                        source: "Légifrance - Décret n°2016-142 du 10/02/2016, Presse",
+                        source_url: "https://www.legifrance.gouv.fr",
+                        date_verified: "2016-02-10",
+                        reliability: "high",
+                        note: "Nommé Président du CA par décret n°2016-142 du 10/02/2016 pendant son mandat de Premier Adjoint au Maire de Paris. A également été Président de Paris Musées (2014-2018). Subventions Philharmonie: €42.3M total.",
+                        publicRoles: [
+                            {
+                                role: "Premier Adjoint au Maire",
+                                organization: "Ville de Paris",
+                                start_date: "2014",
+                                end_date: "2018",
+                                status: "Former high-ranking official"
+                            },
+                            {
+                                role: "Président du Conseil d'Administration",
+                                organization: "Philharmonie de Paris",
+                                start_date: "2016-02-10",
+                                end_date: "2018",
+                                status: "Former"
+                            },
+                            {
+                                role: "Président",
+                                organization: "Paris Musées",
+                                start_date: "2014",
+                                end_date: "2018",
+                                status: "Former"
+                            }
+                        ],
+                        conflictOfInterest: true,
+                        conflictReason: "Nommé Président du CA par décret du 10/02/2016 pendant son mandat de Premier Adjoint au Maire. Article L.2131-11 CGCT: Sont illégales les délibérations auxquelles ont pris part des membres du conseil intéressés à l'affaire. Subventions reçues: €42.3M."
+                    },
+                    { 
                         name: "Gwenola Chambon", 
                         role: "Présidente du Conseil d'administration", 
-                        source: "Service-public.gouv.fr, Decideurs-magazine.com",
+                        source: "Service-public.gouv.fr",
                         source_url: "https://lannuaire.service-public.gouv.fr",
                         date_verified: "2025-06",
                         reliability: "high",
-                        note: "Directrice générale de Vauban Infrastructure Partners. Précédemment Patricia Barbizet.",
+                        note: "Directrice générale de Vauban Infrastructure Partners",
                         publicRoles: [],
                         conflictOfInterest: false
                     },
@@ -1337,10 +1410,10 @@
                         conflictOfInterest: false
                     }
                 ],
-                data_source: "Service Public, Registres des sociétés",
-                data_source_url: "https://lannuaire.service-public.gouv.fr",
+                data_source: "Légifrance, Service Public, A06 Délibérations",
+                data_source_url: "https://www.legifrance.gouv.fr",
                 last_updated: "2026-04-01",
-                coverage: "partial"
+                coverage: "complete"
             },
             "CROIX ROUGE FRANCAISE (NATIONALE)": {
                 board_members: [

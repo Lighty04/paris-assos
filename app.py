@@ -317,6 +317,55 @@ def get_stats():
         logger.error(f"Error in get_stats: {e}")
         return jsonify({'error': 'Internal server error'}), 500
 
+@app.route('/api/stats/quality')
+@cache.cached(timeout=600)
+def get_data_quality():
+    """Get data quality statistics"""
+    try:
+        data = load_data()
+        
+        # Calculate data quality metrics
+        total_years = 0
+        clean_years = 0
+        suspicious_years = 0
+        years_with_incomplete = 0
+        years_with_negative = 0
+        years_with_duplicates = 0
+        
+        for assoc in data:
+            if 'netSubventions' in assoc and assoc['netSubventions']:
+                for sub in assoc['netSubventions']:
+                    total_years += 1
+                    
+                    # Check for negative amounts
+                    if sub.get('net_amount', 0) < 0:
+                        years_with_negative += 1
+                        suspicious_years += 1
+                    # Check for incomplete data (missing object, etc.)
+                    elif not sub.get('object'):
+                        years_with_incomplete += 1
+                        suspicious_years += 1
+                    else:
+                        clean_years += 1
+        
+        # Calculate clean percentage
+        clean_percent = (clean_years / total_years * 100) if total_years > 0 else 100
+        
+        return jsonify({
+            'dataQuality': {
+                'totalYears': total_years,
+                'cleanYears': clean_years,
+                'suspiciousYears': suspicious_years,
+                'cleanPercent': round(clean_percent, 1),
+                'yearsWithIncomplete': years_with_incomplete,
+                'yearsWithNegative': years_with_negative,
+                'yearsWithDuplicates': years_with_duplicates
+            }
+        })
+    except Exception as e:
+        logger.error(f"Error in get_data_quality: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
+
 @app.route('/api/association')
 @cache.cached(timeout=300, query_string=True)
 def get_association_detail():
