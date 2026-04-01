@@ -92,10 +92,14 @@ def load_data(force_reload=False):
                     'totalAmount': 0,
                     'board_members': item.get('board_members', []),
                     'board_data_source': item.get('board_data_source', ''),
-                    'board_coverage': item.get('board_coverage', 'none')
+                    'board_coverage': item.get('board_coverage', 'none'),
+                    # Add net subvention fields
+                    'netSubventions': [],
+                    'netTotalAmount': 0,
+                    'netYearlyData': {}
                 }
             
-            # Add subventions
+            # Add subventions (raw data)
             for sub in item.get('subventions', []):
                 associations[siret]['subventions'].append({
                     'year': str(sub.get('year', '')),
@@ -106,13 +110,27 @@ def load_data(force_reload=False):
                     'collectivite': sub.get('collectivite', '')
                 })
             
-            # Recalculate total
+            # Add net subventions (processed data)
+            for sub in item.get('netSubventions', []):
+                associations[siret]['netSubventions'].append({
+                    'year': str(sub.get('year', '')),
+                    'net_amount': float(sub.get('net_amount', 0)),
+                    'raw_amount': float(sub.get('raw_amount', 0)),
+                    'object': sub.get('object', ''),
+                    'adjustment_reason': sub.get('adjustment_reason', '')
+                })
+            
+            # Use netTotalAmount if available, otherwise calculate from subventions
+            associations[siret]['netTotalAmount'] = float(item.get('netTotalAmount', 0))
+            associations[siret]['netYearlyData'] = item.get('netYearlyData', {})
+            
+            # Recalculate raw total for reference
             associations[siret]['totalAmount'] = sum(
                 s['amount'] for s in associations[siret]['subventions']
             )
         
-        # Sort by total amount descending
-        DATA_CACHE = sorted(associations.values(), key=lambda x: x['totalAmount'], reverse=True)
+        # Sort by net total amount descending (primary display metric)
+        DATA_CACHE = sorted(associations.values(), key=lambda x: x.get('netTotalAmount', x['totalAmount']), reverse=True)
         DATA_TIMESTAMP = os.path.getmtime(config.DATA_FILE)
         
         load_time = (datetime.now() - start_time).total_seconds()
