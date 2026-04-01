@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Paris Subventions API Server
-Serves paginated data from the pre-processed data.json file
+Serves paginated data from the pre-processed data_net.json file (net subventions)
 """
 
 import http.server
@@ -12,27 +12,56 @@ import os
 import sys
 
 PORT = 8010
-DATA_FILE = "/home/decisionhelper/website/data.json"
+# Use net data by default
+DATA_FILE = "/home/decisionhelper/website/data_net.json"
+RAW_DATA_FILE = "/home/decisionhelper/website/data.json"
 CACHE = None
+RAW_CACHE = None
 
-def load_data():
+def load_data(use_net=True):
     """Load and cache the data file"""
+    global CACHE, RAW_CACHE
+    
+    if use_net and CACHE is not None:
+        return CACHE.get('associations', [])
+    
+    if not use_net and RAW_CACHE is not None:
+        return RAW_CACHE
+    
+    file_to_load = DATA_FILE if use_net else RAW_DATA_FILE
+    print(f"Loading data from {file_to_load}...")
+    
+    try:
+        with open(file_to_load, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            
+        if use_net:
+            CACHE = data
+            associations = data.get('associations', [])
+            print(f"Loaded {len(associations)} associations (net subventions)")
+            return associations
+        else:
+            RAW_CACHE = data
+            print(f"Loaded {len(data)} associations (raw data)")
+            return data
+    except Exception as e:
+        print(f"Error loading {file_to_load}: {e}")
+        return []
+
+def load_stats():
+    """Load global statistics"""
     global CACHE
     if CACHE is None:
-        print(f"Loading data from {DATA_FILE}...")
-        with open(DATA_FILE, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-            # Data is already a list of associations
-            CACHE = data
-            print(f"Loaded {len(CACHE)} associations")
-    return CACHE
+        load_data(use_net=True)
+    return CACHE.get('stats', {})
 
 def get_filters(data):
     """Get unique years and sectors for filters"""
     years = set()
     sectors = set()
     for assoc in data:
-        for sub in assoc.get('subventions', []):
+        # Use netSubventions for years
+        for sub in assoc.get('netSubventions', []):
             year = sub.get('year', '')
             if year:
                 years.add(year)
@@ -62,11 +91,11 @@ def filter_associations(data, search='', year='', sector=''):
                 any(search_lower in str(s).lower() for s in sectors)
             )
         
-        # Year filter
+        # Year filter - use netSubventions
         matches_year = True
         if year:
-            subventions = assoc.get('subventions', [])
-            matches_year = any(sub.get('year') == year for sub in subventions)
+            net_subs = assoc.get('netSubventions', [])
+            matches_year = any(sub.get('year') == year for sub in net_subs)
         
         # Sector filter
         matches_sector = True
@@ -79,26 +108,19 @@ def filter_associations(data, search='', year='', sector=''):
     return filtered
 
 def get_last_year_info(assoc):
-    """Get the year and amount from the most recent year with subvention data"""
-    subventions = assoc.get('subventions', [])
-    if not subventions:
-        return {'year': None, 'amount': 0}
-    
-    # Group by year and sum amounts
-    year_totals = {}
-    for sub in subventions:
-        year = sub.get('year', '')
-        if year:
-            if year not in year_totals:
-                year_totals[year] = 0
-            year_totals[year] += sub.get('amount', 0)
-    
-    if not year_totals:
+    """Get the year and net amount from the most recent year with subvention data"""
+    net_subventions = assoc.get('netSubventions', [])
+    if not net_subventions:
         return {'year': None, 'amount': 0}
     
     # Get the most recent year
-    last_year = max(year_totals.keys())
-    return {'year': last_year, 'amount': year_totals[last_year]}
+    sorted_subs = sorted(net_subventions, key=lambda x: x.get('year', ''), reverse=True)
+    if sorted_subs:
+        return {
+            'year': sorted_subs[0].get('year'),
+            'amount': sorted_subs[0].get('net_amount', 0)
+        }
+    return {'year': None, 'amount': 0}
 
 def sort_associations(data, sort_param=''):
     """Sort associations based on sort parameter"""
@@ -106,14 +128,14 @@ def sort_associations(data, sort_param=''):
         return data
     
     def get_last_year_amount(assoc):
-        """Get the amount from the most recent year"""
+        """Get the net amount from the most recent year"""
         info = get_last_year_info(assoc)
         return info['amount']
     
     if sort_param == 'total_desc':
-        return sorted(data, key=lambda x: x.get('totalAmount', 0), reverse=True)
+        return sorted(data, key=lambda x: x.get('netTotalAmount', 0), reverse=True)
     elif sort_param == 'total_asc':
-        return sorted(data, key=lambda x: x.get('totalAmount', 0))
+        return sorted(data, key=lambda x: x.get('netTotalAmount', 0))
     elif sort_param == 'lastYear_desc':
         return sorted(data, key=get_last_year_amount, reverse=True)
     elif sort_param == 'lastYear_asc':
@@ -126,14 +148,14 @@ def sort_associations(data, sort_param=''):
         return data
 
 def get_stats(data):
-    """Calculate statistics"""
+    """Calculate statistics using net amounts"""
     total_assoc = len(data)
-    total_subv = sum(len(a.get('subventions', [])) for a in data)
-    total_amt = sum(a.get('totalAmount', 0) for a in data)
+    total_subv = sum(len(a.get('netSubventions', [])) for a in data)
+    total_amt = sum(a.get('netTotalAmount', 0) for a in data)
     
     years = set()
     for a in data:
-        for s in a.get('subventions', []):
+        for s in a.get('netSubventions', []):
             year = s.get('year', '')
             if year:
                 years.add(year)
@@ -168,11 +190,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         
         # API endpoints
         if path == '/api/associations':
-            data = load_data()
+            data = load_data(use_net=True)
             
             # Get parameters
             page = int(query.get('page', ['1'])[0])
-            per_page = int(query.get('per_page', ['100'])[0])  # Changed default to 100
+            per_page = int(query.get('per_page', ['100'])[0])
             search = query.get('search', [''])[0]
             year = query.get('year', [''])[0]
             sector = query.get('sector', [''])[0]
@@ -203,7 +225,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         
         # Search endpoint
         if path == '/api/associations/search':
-            data = load_data()
+            data = load_data(use_net=True)
             q = query.get('q', [''])[0]
             page = int(query.get('page', ['1'])[0])
             limit = int(query.get('limit', ['100'])[0])
@@ -228,7 +250,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         
         # Single association by ID (siret)
         if path.startswith('/api/associations/'):
-            data = load_data()
+            data = load_data(use_net=True)
             id_param = path.split('/')[-1]
             assoc = next((a for a in data if a.get('siret') == id_param), None)
             if assoc:
@@ -238,13 +260,34 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 self.end_headers()
             return
         
+        # Raw association data (for transparency)
+        if path.startswith('/api/associations/raw/'):
+            raw_data = load_data(use_net=False)
+            id_param = path.split('/')[-1]
+            assoc = next((a for a in raw_data if a.get('siret') == id_param), None)
+            if assoc:
+                self.send_json(assoc)
+            else:
+                self.send_response(404)
+                self.end_headers()
+            return
+        
+        # Raw associations list (for transparency)
+        if path == '/api/associations/raw':
+            raw_data = load_data(use_net=False)
+            self.send_json({
+                'associations': raw_data,
+                'note': 'Raw data without net subvention calculation. Use /api/associations for net data.'
+            })
+            return
+        
         if path == '/api/filters':
-            data = load_data()
+            data = load_data(use_net=True)
             self.send_json(get_filters(data))
             return
         
         if path == '/api/stats':
-            data = load_data()
+            data = load_data(use_net=True)
             search = query.get('search', [''])[0]
             year = query.get('year', [''])[0]
             sector = query.get('sector', [''])[0]
@@ -252,9 +295,23 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_json(get_stats(filtered))
             return
         
+        # Data quality stats endpoint
+        if path == '/api/stats/quality':
+            stats = load_stats()
+            self.send_json({
+                'dataQuality': stats.get('dataQuality', {}),
+                'totals': {
+                    'netAmount': stats.get('totalNetAmount', 0),
+                    'rawAmount': stats.get('totalRawAmount', 0),
+                    'difference': stats.get('difference', 0),
+                    'reductionPercent': stats.get('reductionPercent', 0)
+                }
+            })
+            return
+        
         # Legacy: association lookup by siret query param
         if path == '/api/association':
-            data = load_data()
+            data = load_data(use_net=True)
             siret = query.get('siret', [''])[0]
             assoc = next((a for a in data if a.get('siret') == siret), None)
             if assoc:
@@ -305,13 +362,14 @@ if __name__ == '__main__':
     
     # Preload data
     try:
-        load_data()
+        load_data(use_net=True)
     except Exception as e:
         print(f"Error loading data: {e}")
         sys.exit(1)
     
     with ReusableTCPServer(("", PORT), Handler) as httpd:
         print(f"Server running at http://localhost:{PORT}/")
+        print("Serving net subvention data from data_net.json")
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:

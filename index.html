@@ -35,22 +35,43 @@
         .stats-bar {
             display: flex;
             justify-content: center;
-            gap: 3rem;
+            gap: 2rem;
             padding: 1.5rem;
             background: rgba(15, 52, 96, 0.5);
             flex-wrap: wrap;
         }
         .stat-item {
             text-align: center;
+            padding: 0 1rem;
         }
         .stat-value {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: #e94560;
         }
         .stat-label {
             color: #a0a0a0;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+        }
+        .data-quality-badge {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .data-quality-badge.warning {
+            background: rgba(234, 179, 8, 0.2);
+            color: #facc15;
+        }
+        .data-quality-badge.error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
         }
         .container {
             max-width: 1400px;
@@ -58,7 +79,7 @@
             padding: 2rem;
         }
         .search-bar {
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
@@ -86,9 +107,50 @@
             font-size: 1rem;
             cursor: pointer;
         }
+        .info-bar {
+            background: rgba(15, 52, 96, 0.3);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .info-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .net-indicator {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .net-indicator::before {
+            content: '✓';
+            font-weight: bold;
+        }
+        .methodology-link {
+            color: #e94560;
+            font-size: 0.85rem;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .methodology-link:hover {
+            text-decoration: underline;
+        }
         .associations-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
             gap: 1.5rem;
         }
         .association-card {
@@ -133,6 +195,7 @@
             font-weight: bold;
             color: #fff;
             margin-bottom: 0.3rem;
+            padding-right: 100px;
         }
         .card-siret {
             font-size: 0.8rem;
@@ -146,13 +209,21 @@
             align-items: flex-end;
         }
         .card-total {
-            background: #e94560;
+            background: #10b981;
             color: #fff;
             padding: 0.5rem 1rem;
             border-radius: 20px;
             font-weight: bold;
             font-size: 0.9rem;
             white-space: nowrap;
+        }
+        .card-total.net {
+            background: #10b981;
+        }
+        .card-total.raw {
+            background: #6b7280;
+            font-size: 0.75rem;
+            opacity: 0.8;
         }
         .card-last-year {
             background: #0f3460;
@@ -166,7 +237,7 @@
         }
         .card-amount-label {
             font-size: 0.65rem;
-            opacity: 0.8;
+            opacity: 0.9;
             font-weight: normal;
             margin-bottom: 0.1rem;
             text-transform: uppercase;
@@ -280,6 +351,14 @@
             color: #fff;
             font-weight: bold;
         }
+        .detail-value.net {
+            color: #10b981;
+        }
+        .detail-value.raw {
+            color: #9ca3af;
+            font-size: 0.85rem;
+            text-decoration: line-through;
+        }
         .subventions-list {
             max-height: 300px;
             overflow-y: auto;
@@ -307,10 +386,64 @@
             flex-shrink: 0;
             margin-left: 1rem;
         }
+        .subvention-amount.net {
+            color: #10b981;
+        }
+        .subvention-amount.raw {
+            color: #6b7280;
+            text-decoration: line-through;
+            font-size: 0.85rem;
+        }
         .subvention-object {
             flex: 1;
             margin: 0 1rem;
             color: #b8b8b8;
+            font-size: 0.9rem;
+        }
+        .net-subvention-detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.3rem;
+        }
+        .net-amount {
+            color: #10b981;
+            font-weight: 600;
+        }
+        .raw-amount {
+            color: #6b7280;
+            font-size: 0.85rem;
+            text-decoration: line-through;
+        }
+        .detail-toggle {
+            background: rgba(15, 52, 96, 0.5);
+            border: 1px solid #0f3460;
+            color: #e94560;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            transition: all 0.2s;
+        }
+        .detail-toggle:hover {
+            background: rgba(233, 69, 96, 0.2);
+        }
+        .raw-details {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(15, 52, 96, 0.2);
+            border-radius: 8px;
+            border-left: 3px solid #6b7280;
+        }
+        .raw-details.visible {
+            display: block;
+        }
+        .raw-details h4 {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
         }
         /* Loading and pagination styles */
         .loading {
@@ -816,13 +949,17 @@
                 width: 100%;
                 text-align: center;
             }
+            .info-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>🏛️ Paris Subventions</h1>
-        <p>Suivi transparent des contributions municipales aux associations - Identification des potentiels conflits d'intérêts</p>
+        <p>Suivi transparent des contributions municipales aux associations - Subventions nettes calculées</p>
     </div>
 
     <div class="stats-bar">
@@ -832,19 +969,33 @@
         </div>
         <div class="stat-item">
             <div class="stat-value" id="totalSubventions">-</div>
-            <div class="stat-label">Subventions</div>
+            <div class="stat-label">Subventions (nettes)</div>
         </div>
         <div class="stat-item">
             <div class="stat-value" id="totalAmount">-</div>
-            <div class="stat-label">Montant total voté</div>
+            <div class="stat-label">Montant total net</div>
         </div>
         <div class="stat-item">
             <div class="stat-value" id="yearRange">-</div>
             <div class="stat-label">Période couverte</div>
         </div>
+        <div class="stat-item">
+            <div class="stat-label">Qualité des données</div>
+            <div class="data-quality-badge" id="dataQualityBadge">Chargement...</div>
+        </div>
     </div>
 
     <div class="container">
+        <div class="info-bar">
+            <div class="info-bar-left">
+                <div class="net-indicator">Données nettes</div>
+                <span style="color: #a0a0a0; font-size: 0.9rem;">
+                    Les montants affichés sont des <strong>subventions nettes</strong> (ajustées pour les remboursements, acomptes/soldes, etc.)
+                </span>
+            </div>
+            <a class="methodology-link" onclick="showMethodology()">📖 Voir la méthodologie de calcul</a>
+        </div>
+
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Rechercher une association, SIRET ou secteur d'activité...">
             <select id="yearFilter">
@@ -866,8 +1017,8 @@
             <label for="sortFilter">📊 Trier par:</label>
             <select id="sortFilter">
                 <option value="">Défaut</option>
-                <option value="total_desc">💰 Montant total (décroissant)</option>
-                <option value="total_asc">💰 Montant total (croissant)</option>
+                <option value="total_desc">💰 Montant total net (décroissant)</option>
+                <option value="total_asc">💰 Montant total net (croissant)</option>
                 <option value="lastYear_desc">📅 Dernière année (décroissant)</option>
                 <option value="lastYear_asc">📅 Dernière année (croissant)</option>
                 <option value="name_asc">🔤 Nom (A-Z)</option>
@@ -897,6 +1048,52 @@
         </div>
     </div>
 
+    <div class="modal" id="methodologyModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeMethodology()">×</button>
+            <div class="modal-header">
+                <div class="modal-title">📖 Méthodologie de calcul des subventions nettes</div>
+            </div>
+            <div class="modal-section">
+                <h3>🎯 Objectif</h3>
+                <p style="color: #e5e7eb; line-height: 1.6;">
+                    Calculer les <strong>véritables contributions des contribuables parisiens</strong> en reconciliant les acomptes, 
+                    soldes, remboursements et ajustements pour éviter le double-comptage.
+                </p>
+            </div>
+            <div class="modal-section">
+                <h3>📊 Logique de calcul</h3>
+                <div style="background: rgba(15, 52, 96, 0.5); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <h4 style="color: #4ade80; margin-bottom: 0.5rem;">✅ Inclus dans le net</h4>
+                    <ul style="color: #e5e7eb; line-height: 1.8; margin-left: 1.5rem;">
+                        <li><strong>Subventions normales</strong> - Montants de base votés</li>
+                        <li><strong>Acomptes + Soldes</strong> - Sommés ensemble (parties d'un même engagement)</li>
+                        <li><strong>Régularisations</strong> - Ajustements de fin d'exercice</li>
+                    </ul>
+                </div>
+                <div style="background: rgba(15, 52, 96, 0.5); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <h4 style="color: #f87171; margin-bottom: 0.5rem;">❌ Exclus du net</h4>
+                    <ul style="color: #e5e7eb; line-height: 1.8; margin-left: 1.5rem;">
+                        <li><strong>Remboursements</strong> - Retours de fonds à la collectivité (soustraits)</li>
+                        <li><strong>Remboursements d'emprunt</strong> - Annuités de remboursement (non subvention)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-section">
+                <h3>🔍 Détection des doublons</h3>
+                <p style="color: #e5e7eb; line-height: 1.6;">
+                    Les entrées avec la même description et un montant similaire (à 1% près) sont signalées comme potentiels doublons.
+                </p>
+            </div>
+            <div class="modal-section">
+                <h3>📈 Indicateurs de qualité</h3>
+                <p style="color: #e5e7eb; line-height: 1.6;">
+                    <strong>Données nettes</strong> - Pourcentage d'années sans alerte (acompte sans solde, montant négatif, etc.)
+                </p>
+            </div>
+        </div>
+    </div>
+
     <script>
         // State management
         let currentState = {
@@ -909,13 +1106,14 @@
             conflictOnly: false,
             totalPages: 1,
             associations: [],
-            isLoading: false
+            isLoading: false,
+            dataQuality: null
         };
 
         // Sort labels for indicator
         const sortLabels = {
-            'total_desc': 'Montant total ↓',
-            'total_asc': 'Montant total ↑',
+            'total_desc': 'Montant total net ↓',
+            'total_asc': 'Montant total net ↑',
             'lastYear_desc': 'Dernière année ↓',
             'lastYear_asc': 'Dernière année ↑',
             'name_asc': 'Nom A-Z',
@@ -1316,6 +1514,7 @@
             loadFilters();
             loadAssociations();
             loadStats();
+            loadDataQuality();
 
             // Event listeners
             document.getElementById('searchInput').addEventListener('input', 
@@ -1360,11 +1559,43 @@
                 if (e.target === this) closeModal();
             });
 
+            document.getElementById('methodologyModal').addEventListener('click', function(e) {
+                if (e.target === this) closeMethodology();
+            });
+
             // Close modal on Escape key
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') closeModal();
+                if (e.key === 'Escape') {
+                    closeModal();
+                    closeMethodology();
+                }
             });
         });
+
+        async function loadDataQuality() {
+            try {
+                const response = await fetch('/api/stats/quality');
+                if (!response.ok) throw new Error('Failed to load quality stats');
+                const data = await response.json();
+                currentState.dataQuality = data.dataQuality;
+                
+                const badge = document.getElementById('dataQualityBadge');
+                const cleanPercent = data.dataQuality.cleanPercent || 0;
+                
+                if (cleanPercent >= 95) {
+                    badge.className = 'data-quality-badge';
+                    badge.innerHTML = `✓ Données nettes • ${cleanPercent.toFixed(0)}% fiables`;
+                } else if (cleanPercent >= 85) {
+                    badge.className = 'data-quality-badge warning';
+                    badge.innerHTML = `⚠ Données nettes • ${cleanPercent.toFixed(0)}% fiables`;
+                } else {
+                    badge.className = 'data-quality-badge error';
+                    badge.innerHTML = `✗ Données nettes • ${cleanPercent.toFixed(0)}% fiables`;
+                }
+            } catch (error) {
+                console.error('Error loading quality stats:', error);
+            }
+        }
 
         async function loadFilters() {
             try {
@@ -1431,6 +1662,7 @@
                             <p>Aucune association trouvée pour ces critères de recherche.</p>
                         </div>
                     `;
+
                     document.getElementById('pagination').style.display = 'none';
                 } else {
                     renderAssociations(associations);
@@ -1480,11 +1712,13 @@
             }).format(amount);
         }
 
-        function getYearlyData(association) {
+        function getYearlyNetData(association) {
             const yearly = {};
-            association.subventions.forEach(sub => {
-                if (!yearly[sub.year]) yearly[sub.year] = 0;
-                yearly[sub.year] += sub.amount;
+            const netSubs = association.netSubventions || [];
+            netSubs.forEach(sub => {
+                const year = sub.year;
+                if (!yearly[year]) yearly[year] = 0;
+                yearly[year] += sub.net_amount;
             });
             return yearly;
         }
@@ -1511,28 +1745,15 @@
         }
 
         // Function to calculate last year subvention data
-        function getLastYearSubvention(assoc) {
-            const subventions = assoc.subventions || [];
-            if (!subventions || subventions.length === 0) {
+        function getLastYearNetSubvention(assoc) {
+            const netSubs = assoc.netSubventions || [];
+            if (!netSubs || netSubs.length === 0) {
                 return { year: null, amount: 0 };
             }
             
             // Find the most recent year
-            let lastYear = '';
-            let lastAmount = 0;
-            
-            for (const sub of subventions) {
-                const year = sub.year || '';
-                if (year && year.localeCompare(lastYear) > 0) {
-                    lastYear = year;
-                    lastAmount = sub.amount || 0;
-                } else if (year === lastYear) {
-                    // Sum up amounts for the same year
-                    lastAmount += sub.amount || 0;
-                }
-            }
-            
-            return { year: lastYear, amount: lastAmount };
+            const sorted = netSubs.sort((a, b) => b.year.localeCompare(a.year));
+            return { year: sorted[0].year, amount: sorted[0].net_amount };
         }
 
         function renderAssociations(associations) {
@@ -1543,20 +1764,25 @@
             grid.id = 'associationsGrid';
 
             associations.forEach((assoc, index) => {
-                const yearlyData = getYearlyData(assoc);
+                const yearlyData = getYearlyNetData(assoc);
                 const years = Object.keys(yearlyData).sort();
                 const amounts = years.map(y => yearlyData[y]);
                 const chartId = `chart-${currentState.page}-${index}`;
                 const hasConflict = hasConflictOfInterest(assoc.name);
                 
                 // Get last year subvention data
-                const lastYearData = getLastYearSubvention(assoc);
+                const lastYearData = getLastYearNetSubvention(assoc);
                 const lastYearDisplay = lastYearData.year ? 
                     `<div class="card-last-year">
                         <div class="card-amount-label">Dernière année (${lastYearData.year})</div>
                         <div class="card-amount-value">${formatCurrency(lastYearData.amount)}</div>
                     </div>` : 
                     '<div class="card-last-year"><div class="card-amount-label">Dernière année</div><div class="card-amount-value">N/A</div></div>';
+
+                // Calculate raw total for comparison
+                const rawTotal = assoc.totalAmount || assoc.netTotalAmount;
+                const netTotal = assoc.netTotalAmount || 0;
+                const hasAdjustment = rawTotal !== netTotal;
 
                 const card = document.createElement('div');
                 card.className = `association-card${hasConflict ? ' has-conflict' : ''}`;
@@ -1569,10 +1795,15 @@
                             <div class="card-siret">SIRET: ${assoc.siret}</div>
                         </div>
                         <div class="card-totals">
-                            <div class="card-total">
-                                <div class="card-amount-label">Total des subventions</div>
-                                <div class="card-amount-value">${formatCurrency(assoc.totalAmount)}</div>
+                            <div class="card-total net">
+                                <div class="card-amount-label">Subvention nette</div>
+                                <div class="card-amount-value">${formatCurrency(netTotal)}</div>
                             </div>
+                            ${hasAdjustment ? `
+                            <div class="card-total raw" title="Montant brut avant ajustements">
+                                <div class="card-amount-label">Montant brut</div>
+                                <div class="card-amount-value">${formatCurrency(rawTotal)}</div>
+                            </div>` : ''}
                             ${lastYearDisplay}
                         </div>
                     </div>
@@ -1596,9 +1827,9 @@
                             data: {
                                 labels: years,
                                 datasets: [{
-                                    label: 'Montant (€)',
+                                    label: 'Montant net (€)',
                                     data: amounts,
-                                    backgroundColor: hasConflict ? '#dc2626' : '#e94560',
+                                    backgroundColor: hasConflict ? '#dc2626' : '#10b981',
                                     borderRadius: 4
                                 }]
                             },
@@ -1664,10 +1895,15 @@
                 if (!response.ok) throw new Error('Failed to load association details');
                 const assoc = await response.json();
 
-                const yearlyData = getYearlyData(assoc);
+                const yearlyData = getYearlyNetData(assoc);
                 const years = Object.keys(yearlyData).sort();
                 const amounts = years.map(y => yearlyData[y]);
                 const hasConflict = hasConflictOfInterest(assoc.name);
+
+                // Calculate totals
+                const netTotal = assoc.netTotalAmount || 0;
+                const rawTotal = assoc.totalAmount || netTotal;
+                const hasAdjustment = Math.abs(rawTotal - netTotal) > 1;
 
                 const modalBody = document.getElementById('modalBody');
                 modalBody.innerHTML = `
@@ -1684,11 +1920,13 @@
                                 <div class="detail-value">${assoc.sectors.join(', ') || 'Non spécifié'}</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-value" style="color:#e94560">${formatCurrency(assoc.totalAmount)}</div>
+                                <div class="detail-label">Subvention nette totale</div>
+                                <div class="detail-value net" style="color:#10b981">${formatCurrency(netTotal)}</div>
+                                ${hasAdjustment ? `<div class="detail-value raw">${formatCurrency(rawTotal)} brut</div>` : ''}
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">Nombre de subventions</div>
-                                <div class="detail-value">${assoc.subventions.length}</div>
+                                <div class="detail-value">${assoc.netSubventions ? assoc.netSubventions.length : 0}</div>
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">Années actives</div>
@@ -1698,19 +1936,36 @@
                     </div>
 
                     <div class="modal-section">
-                        <h3>📊 Historique des contributions</h3>
+                        <h3>📊 Historique des contributions (nettes)</h3>
                         <div style="height: 300px; margin-bottom: 1rem;">
                             <canvas id="modalChart"></canvas>
                         </div>
                         <div class="subventions-list">
-                            ${assoc.subventions.sort((a, b) => b.year.localeCompare(a.year)).map(sub => `
+                            ${(assoc.netSubventions || []).sort((a, b) => b.year.localeCompare(a.year)).map(sub => `
                                 <div class="subvention-item">
                                     <span class="subvention-year">${sub.year}</span>
-                                    <span class="subvention-object">${escapeHtml(sub.object)}</span>
-                                    <span class="subvention-amount">${formatCurrency(sub.amount)}</span>
+                                    <span class="subvention-object">${escapeHtml(sub.object || 'Non spécifié')}</span>
+                                    <div style="text-align: right;">
+                                        <span class="subvention-amount net">${formatCurrency(sub.net_amount)} net</span>
+                                        ${sub.raw_amount !== sub.net_amount ? `<br><span class="subvention-amount raw">${formatCurrency(sub.raw_amount)} brut</span>` : ''}
+                                    </div>
                                 </div>
                             `).join('')}
                         </div>
+                        ${hasAdjustment ? `
+                        <button class="detail-toggle" onclick="toggleRawDetails(this)">
+                            📋 Voir le détail brut des subventions
+                        </button>
+                        <div class="raw-details" id="rawDetails">
+                            <h4>Détail brut (non ajusté)</h4>
+                            <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 1rem;">
+                                Ces montants correspondent aux votes bruts avant ajustement pour remboursements, acomptes/soldes, etc.
+                            </p>
+                            <div class="detail-grid" id="rawDetailContent">
+                                Chargement...
+                            </div>
+                        </div>
+                        ` : ''}
                     </div>
 
                     <div class="modal-section" id="boardMembersSection">
@@ -1723,16 +1978,21 @@
                 // Add board members section
                 populateBoardMembers(assoc);
 
+                // Load raw details if needed
+                if (hasAdjustment) {
+                    loadRawDetails(siret);
+                }
+
                 setTimeout(() => {
                     new Chart(document.getElementById('modalChart'), {
                         type: 'line',
                         data: {
                             labels: years,
                             datasets: [{
-                                label: 'Montant des subventions (€)',
+                                label: 'Montant net des subventions (€)',
                                 data: amounts,
-                                borderColor: hasConflict ? '#dc2626' : '#e94560',
-                                backgroundColor: hasConflict ? 'rgba(220, 38, 38, 0.2)' : 'rgba(233, 69, 96, 0.2)',
+                                borderColor: hasConflict ? '#dc2626' : '#10b981',
+                                backgroundColor: hasConflict ? 'rgba(220, 38, 38, 0.2)' : 'rgba(16, 185, 129, 0.2)',
                                 fill: true,
                                 tension: 0.4
                             }]
@@ -1763,6 +2023,57 @@
             } catch (error) {
                 console.error('Error loading association details:', error);
                 alert('Erreur lors du chargement des détails de l\'association');
+            }
+        }
+
+        async function loadRawDetails(siret) {
+            try {
+                const response = await fetch(`/api/associations/raw/${encodeURIComponent(siret)}`);
+                if (!response.ok) throw new Error('Failed to load raw data');
+                const rawAssoc = await response.json();
+                
+                const rawContent = document.getElementById('rawDetailContent');
+                if (rawContent) {
+                    const rawByYear = {};
+                    (rawAssoc.subventions || []).forEach(sub => {
+                        if (!rawByYear[sub.year]) rawByYear[sub.year] = [];
+                        rawByYear[sub.year].push(sub);
+                    });
+                    
+                    const sortedYears = Object.keys(rawByYear).sort().reverse();
+                    let html = '';
+                    sortedYears.forEach(year => {
+                        const subs = rawByYear[year];
+                        const yearTotal = subs.reduce((sum, s) => sum + s.amount, 0);
+                        html += `
+                            <div class="detail-item" style="margin-bottom: 1rem;">
+                                <div class="detail-label">${year}</div>
+                                <div class="detail-value">${formatCurrency(yearTotal)} brut</div>
+                                <div style="font-size: 0.8rem; color: #9ca3af; margin-top: 0.5rem;">
+                                    ${subs.length} entrée(s)
+                                </div>
+                            </div>
+                        `;
+                    });
+                    rawContent.innerHTML = html;
+                }
+            } catch (error) {
+                console.error('Error loading raw details:', error);
+                const rawContent = document.getElementById('rawDetailContent');
+                if (rawContent) {
+                    rawContent.innerHTML = '<p style="color: #f87171;">Erreur de chargement des détails bruts</p>';
+                }
+            }
+        }
+
+        function toggleRawDetails(button) {
+            const rawDetails = document.getElementById('rawDetails');
+            if (rawDetails.classList.contains('visible')) {
+                rawDetails.classList.remove('visible');
+                button.textContent = '📋 Voir le détail brut des subventions';
+            } else {
+                rawDetails.classList.add('visible');
+                button.textContent = '📋 Masquer le détail brut';
             }
         }
 
@@ -1912,6 +2223,14 @@
 
         function closeModal() {
             document.getElementById('detailModal').classList.remove('active');
+        }
+
+        function showMethodology() {
+            document.getElementById('methodologyModal').classList.add('active');
+        }
+
+        function closeMethodology() {
+            document.getElementById('methodologyModal').classList.remove('active');
         }
 
         function updateSortIndicator() {
