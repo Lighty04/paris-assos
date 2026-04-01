@@ -35,43 +35,22 @@
         .stats-bar {
             display: flex;
             justify-content: center;
-            gap: 2rem;
+            gap: 3rem;
             padding: 1.5rem;
             background: rgba(15, 52, 96, 0.5);
             flex-wrap: wrap;
         }
         .stat-item {
             text-align: center;
-            padding: 0 1rem;
         }
         .stat-value {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: bold;
             color: #e94560;
         }
         .stat-label {
             color: #a0a0a0;
-            font-size: 0.85rem;
-            margin-top: 0.3rem;
-        }
-        .data-quality-badge {
-            background: rgba(34, 197, 94, 0.2);
-            color: #4ade80;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-        .data-quality-badge.warning {
-            background: rgba(234, 179, 8, 0.2);
-            color: #facc15;
-        }
-        .data-quality-badge.error {
-            background: rgba(239, 68, 68, 0.2);
-            color: #f87171;
+            font-size: 0.9rem;
         }
         .container {
             max-width: 1400px;
@@ -79,7 +58,7 @@
             padding: 2rem;
         }
         .search-bar {
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
@@ -107,50 +86,9 @@
             font-size: 1rem;
             cursor: pointer;
         }
-        .info-bar {
-            background: rgba(15, 52, 96, 0.3);
-            border-radius: 8px;
-            padding: 1rem 1.5rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        .info-bar-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        .net-indicator {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: #fff;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .net-indicator::before {
-            content: '✓';
-            font-weight: bold;
-        }
-        .methodology-link {
-            color: #e94560;
-            font-size: 0.85rem;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .methodology-link:hover {
-            text-decoration: underline;
-        }
         .associations-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
             gap: 1.5rem;
         }
         .association-card {
@@ -195,56 +133,19 @@
             font-weight: bold;
             color: #fff;
             margin-bottom: 0.3rem;
-            padding-right: 100px;
         }
         .card-siret {
             font-size: 0.8rem;
             color: #a0a0a0;
             font-family: monospace;
         }
-        .card-totals {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            align-items: flex-end;
-        }
         .card-total {
-            background: #10b981;
+            background: #e94560;
             color: #fff;
             padding: 0.5rem 1rem;
             border-radius: 20px;
             font-weight: bold;
             font-size: 0.9rem;
-            white-space: nowrap;
-        }
-        .card-total.net {
-            background: #10b981;
-        }
-        .card-total.raw {
-            background: #6b7280;
-            font-size: 0.75rem;
-            opacity: 0.8;
-        }
-        .card-last-year {
-            background: #0f3460;
-            color: #fff;
-            padding: 0.4rem 0.9rem;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            white-space: nowrap;
-            border: 1px solid #e94560;
-        }
-        .card-amount-label {
-            font-size: 0.65rem;
-            opacity: 0.9;
-            font-weight: normal;
-            margin-bottom: 0.1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .card-amount-value {
-            font-weight: bold;
         }
         .card-mission {
             color: #b8b8b8;
@@ -351,14 +252,6 @@
             color: #fff;
             font-weight: bold;
         }
-        .detail-value.net {
-            color: #10b981;
-        }
-        .detail-value.raw {
-            color: #9ca3af;
-            font-size: 0.85rem;
-            text-decoration: line-through;
-        }
         .subventions-list {
             max-height: 300px;
             overflow-y: auto;
@@ -386,64 +279,10 @@
             flex-shrink: 0;
             margin-left: 1rem;
         }
-        .subvention-amount.net {
-            color: #10b981;
-        }
-        .subvention-amount.raw {
-            color: #6b7280;
-            text-decoration: line-through;
-            font-size: 0.85rem;
-        }
         .subvention-object {
             flex: 1;
             margin: 0 1rem;
             color: #b8b8b8;
-            font-size: 0.9rem;
-        }
-        .net-subvention-detail {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 0.3rem;
-        }
-        .net-amount {
-            color: #10b981;
-            font-weight: 600;
-        }
-        .raw-amount {
-            color: #6b7280;
-            font-size: 0.85rem;
-            text-decoration: line-through;
-        }
-        .detail-toggle {
-            background: rgba(15, 52, 96, 0.5);
-            border: 1px solid #0f3460;
-            color: #e94560;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            margin-top: 1rem;
-            transition: all 0.2s;
-        }
-        .detail-toggle:hover {
-            background: rgba(233, 69, 96, 0.2);
-        }
-        .raw-details {
-            display: none;
-            margin-top: 1rem;
-            padding: 1rem;
-            background: rgba(15, 52, 96, 0.2);
-            border-radius: 8px;
-            border-left: 3px solid #6b7280;
-        }
-        .raw-details.visible {
-            display: block;
-        }
-        .raw-details h4 {
-            color: #9ca3af;
-            font-size: 0.9rem;
-            margin-bottom: 0.75rem;
         }
         /* Loading and pagination styles */
         .loading {
@@ -874,51 +713,6 @@
             accent-color: #e94560;
             cursor: pointer;
         }
-        .sort-section {
-            background: rgba(15, 52, 96, 0.3);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        .sort-section label {
-            color: #e5e7eb;
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-        .sort-section select {
-            padding: 0.75rem 1rem;
-            border: 2px solid #0f3460;
-            border-radius: 8px;
-            background: #16213e;
-            color: #fff;
-            font-size: 0.95rem;
-            cursor: pointer;
-            min-width: 250px;
-        }
-        .sort-section select:focus {
-            outline: none;
-            border-color: #e94560;
-        }
-        .sort-indicator {
-            color: #e94560;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .sort-indicator::before {
-            content: '↕️';
-        }
-        .association-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
-        }
-        .associations-grid.sorting .association-card {
-            opacity: 0.7;
-        }
         @media (max-width: 768px) {
             .associations-grid {
                 grid-template-columns: 1fr;
@@ -936,30 +730,13 @@
                 flex-direction: column;
                 text-align: center;
             }
-            .card-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .card-totals {
-                align-items: flex-start;
-                width: 100%;
-                margin-top: 1rem;
-            }
-            .card-total, .card-last-year {
-                width: 100%;
-                text-align: center;
-            }
-            .info-bar {
-                flex-direction: column;
-                align-items: flex-start;
-            }
         }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>🏛️ Paris Subventions</h1>
-        <p>Suivi transparent des contributions municipales aux associations - Subventions calculées</p>
+        <p>Suivi transparent des contributions municipales aux associations - Identification des potentiels conflits d'intérêts</p>
     </div>
 
     <div class="stats-bar">
@@ -973,29 +750,15 @@
         </div>
         <div class="stat-item">
             <div class="stat-value" id="totalAmount">-</div>
-            <div class="stat-label">Montant total net</div>
+            <div class="stat-label">Montant total voté</div>
         </div>
         <div class="stat-item">
             <div class="stat-value" id="yearRange">-</div>
             <div class="stat-label">Période couverte</div>
         </div>
-        <div class="stat-item">
-            <div class="stat-label">Qualité des données</div>
-            <div class="data-quality-badge" id="dataQualityBadge">Chargement...</div>
-        </div>
     </div>
 
     <div class="container">
-        <div class="info-bar">
-            <div class="info-bar-left">
-                <div class="net-indicator">Données nettes</div>
-                <span style="color: #a0a0a0; font-size: 0.9rem;">
-                    Les montants affichés sont des <strong>subventions</strong> (ajustées pour les remboursements, acomptes/soldes, etc.)
-                </span>
-            </div>
-            <a class="methodology-link" onclick="showMethodology()">📖 Voir la méthodologie de calcul</a>
-        </div>
-
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Rechercher une association, SIRET ou secteur d'activité...">
             <select id="yearFilter">
@@ -1011,20 +774,6 @@
                 <input type="checkbox" id="conflictFilter">
                 <span>🔍 Afficher uniquement les associations avec potentiels conflits d'intérêts</span>
             </label>
-        </div>
-
-        <div class="sort-section">
-            <label for="sortFilter">📊 Trier par:</label>
-            <select id="sortFilter">
-                <option value="">Défaut</option>
-                <option value="total_desc">💰 Montant total net (décroissant)</option>
-                <option value="total_asc">💰 Montant total net (croissant)</option>
-                <option value="lastYear_desc">📅 Dernière année (décroissant)</option>
-                <option value="lastYear_asc">📅 Dernière année (croissant)</option>
-                <option value="name_asc">🔤 Nom (A-Z)</option>
-                <option value="name_desc">🔤 Nom (Z-A)</option>
-            </select>
-            <span class="sort-indicator" id="sortIndicator" style="display: none;"></span>
         </div>
 
         <div id="contentArea">
@@ -1048,52 +797,6 @@
         </div>
     </div>
 
-    <div class="modal" id="methodologyModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeMethodology()">×</button>
-            <div class="modal-header">
-                <div class="modal-title">📖 Méthodologie de calcul des subventions</div>
-            </div>
-            <div class="modal-section">
-                <h3>🎯 Objectif</h3>
-                <p style="color: #e5e7eb; line-height: 1.6;">
-                    Calculer les <strong>véritables contributions des contribuables parisiens</strong> en reconciliant les acomptes, 
-                    soldes, remboursements et ajustements pour éviter le double-comptage.
-                </p>
-            </div>
-            <div class="modal-section">
-                <h3>📊 Logique de calcul</h3>
-                <div style="background: rgba(15, 52, 96, 0.5); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <h4 style="color: #4ade80; margin-bottom: 0.5rem;">✅ Inclus dans le net</h4>
-                    <ul style="color: #e5e7eb; line-height: 1.8; margin-left: 1.5rem;">
-                        <li><strong>Subventions normales</strong> - Montants de base votés</li>
-                        <li><strong>Acomptes + Soldes</strong> - Sommés ensemble (parties d'un même engagement)</li>
-                        <li><strong>Régularisations</strong> - Ajustements de fin d'exercice</li>
-                    </ul>
-                </div>
-                <div style="background: rgba(15, 52, 96, 0.5); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <h4 style="color: #f87171; margin-bottom: 0.5rem;">❌ Exclus du net</h4>
-                    <ul style="color: #e5e7eb; line-height: 1.8; margin-left: 1.5rem;">
-                        <li><strong>Remboursements</strong> - Retours de fonds à la collectivité (soustraits)</li>
-                        <li><strong>Remboursements d'emprunt</strong> - Annuités de remboursement (non subvention)</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="modal-section">
-                <h3>🔍 Détection des doublons</h3>
-                <p style="color: #e5e7eb; line-height: 1.6;">
-                    Les entrées avec la même description et un montant similaire (à 1% près) sont signalées comme potentiels doublons.
-                </p>
-            </div>
-            <div class="modal-section">
-                <h3>📈 Indicateurs de qualité</h3>
-                <p style="color: #e5e7eb; line-height: 1.6;">
-                    <strong>Données nettes</strong> - Pourcentage d'années sans alerte (acompte sans solde, montant négatif, etc.)
-                </p>
-            </div>
-        </div>
-    </div>
-
     <script>
         // State management
         let currentState = {
@@ -1102,22 +805,10 @@
             search: '',
             year: '',
             sector: '',
-            sort: '',
             conflictOnly: false,
             totalPages: 1,
             associations: [],
-            isLoading: false,
-            dataQuality: null
-        };
-
-        // Sort labels for indicator
-        const sortLabels = {
-            'total_desc': 'Montant total net ↓',
-            'total_asc': 'Montant total net ↑',
-            'lastYear_desc': 'Dernière année ↓',
-            'lastYear_asc': 'Dernière année ↑',
-            'name_asc': 'Nom A-Z',
-            'name_desc': 'Nom Z-A'
+            isLoading: false
         };
 
         // Enhanced board member data with sources and public roles research
@@ -1125,55 +816,28 @@
             "THEATRE MUSICAL DE PARIS": {
                 board_members: [
                     { 
-                        name: "Sébastien Bazin", 
-                        role: "Président du Conseil d'administration", 
-                        source: "Le Figaro, Presse - Délibérations A06",
-                        source_url: "https://www.lefigaro.fr",
-                        date_verified: "2020-08-28",
+                        name: "Thomas Lauriot dit Prévost", 
+                        role: "Directeur général", 
+                        source: "Le Monde, Libération, FranceTV (2020)",
+                        source_url: "https://www.lemonde.fr/culture/article/2019/09/12/reouverture-du-theatre-du-chatelet",
+                        date_verified: "2019-09-12",
                         reliability: "high",
-                        note: "Conflit documenté avec Christophe Girard (ancien adjoint à la Culture) - 'bras de fer' selon Le Figaro 28/08/2020. Subventions: €200.9M total (2013-2024).",
-                        publicRoles: [
-                            {
-                                role: "Président CA",
-                                organization: "Théâtre du Châtelet",
-                                start_date: "2019",
-                                end_date: "present",
-                                status: "Current"
-                            }
-                        ],
-                        conflictOfInterest: true,
-                        conflictReason: "Conflit d'intérêts documenté avec Christophe Girard (ancien adjoint à la Culture de la Ville de Paris). Article L.2131-11 CGCT - subventions illégales si élu conflicté a participé au vote. Subventions reçues: €200.9M"
+                        publicRoles: [],
+                        conflictOfInterest: false
                     },
                     { 
-                        name: "Christophe Girard", 
-                        role: "Ancien adjoint à la Culture - Influence politique", 
-                        source: "Le Figaro 28/08/2020, CRC oct 2023",
-                        source_url: "https://www.lefigaro.fr",
-                        date_verified: "2020-08-28",
-                        reliability: "high",
-                        note: "Ancien adjoint Culture Ville de Paris (jusqu'en 2020). 'Bras de fer' avec président CA Sébastien Bazin. Multiple CA: Centquatre (président), Paris Musées (VP), Centre Pompidou (membre). Démission 2020 affaire Matzneff.",
-                        publicRoles: [
-                            {
-                                role: "Adjoint à la Culture",
-                                organization: "Ville de Paris",
-                                start_date: "Before 2015",
-                                end_date: "2020",
-                                status: "Former high-ranking official"
-                            },
-                            {
-                                role: "Vice-Président",
-                                organization: "Paris Musées",
-                                start_date: "2014",
-                                end_date: "2020",
-                                status: "Former"
-                            }
-                        ],
-                        conflictOfInterest: true,
-                        conflictReason: "Ancien adjoint à la Culture de la Ville de Paris. Article L.2131-11 CGCT interdit aux élus de voter des subventions à des associations où ils siègent au CA. Subventions Théâtre du Châtelet: €14.9M (2022), €11.7M (2017). Total: €200.9M"
+                        name: "Conseil d'administration", 
+                        role: "Instance de gouvernance", 
+                        source: "Presse - Documentation interne",
+                        source_url: null,
+                        date_verified: "2020",
+                        reliability: "medium",
+                        publicRoles: [],
+                        conflictOfInterest: false
                     }
                 ],
-                data_source: "Le Figaro, CRC oct 2023, A06 Délibérations",
-                data_source_url: "https://www.lefigaro.fr",
+                data_source: "Presse nationale, Recherche web",
+                data_source_url: "https://www.lemonde.fr",
                 last_updated: "2026-04-01",
                 coverage: "partial"
             },
@@ -1189,9 +853,58 @@
                         note: "En poste depuis septembre 2008",
                         publicRoles: [],
                         conflictOfInterest: false
+                    },
+                    { 
+                        name: "Geneviève Garrigos", 
+                        role: "Membre du Conseil d'administration de droit + Conseillère de Paris (élue mars 2026)", 
+                        source: "Conseil de Paris, Ville de Paris",
+                        source_url: "https://www.paris.fr",
+                        date_verified: "2026-04-01",
+                        reliability: "high",
+                        note: "Conseillère de Paris (élue mars 2026), membre du Conseil d'administration du Théâtre de la Ville de droit",
+                        publicRoles: [
+                            {
+                                role: "Conseillère de Paris",
+                                organization: "Ville de Paris",
+                                start_date: "2026-03",
+                                end_date: "present",
+                                status: "Current"
+                            }
+                        ],
+                        conflictOfInterest: true,
+                        conflictSeverity: "HIGH",
+                        conflictDetails: "Élue municipale siégeant au Conseil d'administration d'une structure subventionnée - €7.2M de subventions - Conflit: HIGH"
+                    },
+                    { 
+                        name: "Pierre-Yves Bournazel", 
+                        role: "Membre du Conseil d'administration de droit + Conseiller de Paris + Président du groupe \"100% Paris\"", 
+                        source: "Conseil de Paris, Ville de Paris",
+                        source_url: "https://www.paris.fr",
+                        date_verified: "2026-04-01",
+                        reliability: "high",
+                        note: "Conseiller de Paris, membre du Conseil d'administration du Théâtre de la Ville de droit, Président du groupe \"100% Paris\"",
+                        publicRoles: [
+                            {
+                                role: "Conseiller de Paris",
+                                organization: "Ville de Paris",
+                                start_date: "2014",
+                                end_date: "present",
+                                status: "Current"
+                            },
+                            {
+                                role: "Président du groupe 100% Paris",
+                                organization: "Conseil de Paris",
+                                start_date: "2020",
+                                end_date: "present",
+                                status: "Current"
+                            }
+                        ],
+                        conflictOfInterest: true,
+                        conflictSeverity: "HIGH",
+                        conflictDetails: "Élu municipal siégeant au Conseil d'administration d'une structure subventionnée - €7.2M de subventions - Conflit: HIGH"
                     }
                 ],
-                data_source: "Site officiel Théâtre de la Ville",
+                data_source: "Site officiel Théâtre de la Ville, Conseil de Paris",
                 data_source_url: "https://www.theatredelaville-paris.com",
                 last_updated: "2026-04-01",
                 coverage: "partial"
@@ -1237,46 +950,26 @@
             "FORUM DES IMAGES": {
                 board_members: [
                     { 
-                        name: "Carine Rolland", 
-                        role: "Membre de droit du Conseil d'administration", 
-                        source: "Site officiel Forum des Images, Inspection Générale n°08-13",
-                        source_url: "https://www.forumdesimages.fr/le-forum/presentation/equipe-et-conseil-dadministration",
-                        date_verified: "2026-04-01",
-                        reliability: "high",
-                        note: "Adjointe à la maire de Paris en charge de la Culture (2020-2023). Membre de droit (ex-officio) du CA Forum des Images. Subventions: €83.8M total. Inspection Générale: 'subventionné à 100%'",
-                        publicRoles: [
-                            {
-                                role: "Adjointe à la Culture",
-                                organization: "Ville de Paris",
-                                start_date: "2020",
-                                end_date: "2023",
-                                status: "Former official"
-                            },
-                            {
-                                role: "Présidente",
-                                organization: "Paris Musées",
-                                start_date: "2020",
-                                end_date: "2023",
-                                status: "Former"
-                            }
-                        ],
-                        conflictOfInterest: true,
-                        conflictReason: "Membre de droit du Conseil d'Administration du Forum des Images pendant son mandat d'Adjointe à la Culture (2020-2023). Article L.2131-11 CGCT: Sont illégales les délibérations auxquelles ont pris part des membres du conseil intéressés à l'affaire. Subventions reçues: €83.8M (subventionné à 100% par la Ville)."
-                    },
-                    { 
                         name: "Marc Tessier", 
                         role: "Président du Conseil d'administration", 
-                        source: "Site officiel Forum des Images, Wikipédia",
+                        source: "Site officiel Forum des Images, Wikipédia, Pappers.fr",
                         source_url: "https://fr.wikipedia.org/wiki/Marc_Tessier",
                         date_verified: "2026-04-01",
                         reliability: "high",
-                        note: "Ancien président de France Télévisions (1999-2005)",
+                        note: "Ancien président de France Télévisions (1999-2005), Président de Video Futur Entertainment Group",
                         publicRoles: [
                             {
                                 role: "Président",
                                 organization: "France Télévisions",
                                 start_date: "1999",
                                 end_date: "2005",
+                                status: "Former"
+                            },
+                            {
+                                role: "Membre",
+                                organization: "Conseil national du numérique (CNNum)",
+                                start_date: "2013",
+                                end_date: "2016",
                                 status: "Former"
                             }
                         ],
@@ -1285,19 +978,27 @@
                     { 
                         name: "Patrick Sobelman", 
                         role: "Vice-président", 
-                        source: "Site officiel Forum des Images",
-                        source_url: "https://www.forumdesimages.fr",
+                        source: "Site officiel, Wikipédia, Unifrance",
+                        source_url: "https://fr.wikipedia.org/wiki/Patrick_Sobelman",
                         date_verified: "2026-04-01",
                         reliability: "high",
-                        note: "Producteur cinéma, co-président Académie des César",
-                        publicRoles: [],
+                        note: "Producteur cinéma (Agat Films & Cie), co-président de l'Académie des César",
+                        publicRoles: [
+                            {
+                                role: "Co-président",
+                                organization: "Académie des César",
+                                start_date: "2020s",
+                                end_date: "present",
+                                status: "Current"
+                            }
+                        ],
                         conflictOfInterest: false
                     }
                 ],
-                data_source: "Site officiel Forum des Images, A06 Délibération 2017 DAC 855",
-                data_source_url: "https://www.forumdesimages.fr/le-forum/presentation/equipe-et-conseil-dadministration",
+                data_source: "Site officiel, Registres publics, Wikipédia",
+                data_source_url: "https://www.forumdesimages.fr",
                 last_updated: "2026-04-01",
-                coverage: "complete"
+                coverage: "partial"
             },
             "ORCHESTRE DE CHAMBRE DE PARIS": {
                 board_members: [
@@ -1352,50 +1053,145 @@
                 last_updated: "2026-04-01",
                 coverage: "partial"
             },
-            "PHILHARMONIE DE PARIS": {
+            "PAVILLON DE L'ARSENAL": {
                 board_members: [
                     { 
-                        name: "Bruno Julliard", 
-                        role: "Ancien Président du Conseil d'administration", 
-                        source: "Légifrance - Décret n°2016-142 du 10/02/2016, Presse",
-                        source_url: "https://www.legifrance.gouv.fr",
-                        date_verified: "2016-02-10",
+                        name: "Patrick Bloche", 
+                        role: "Président du Conseil d'administration + Premier Adjoint à la Maire de Paris (PS) depuis juillet 2024", 
+                        source: "Conseil de Paris, Ville de Paris",
+                        source_url: "https://www.paris.fr",
+                        date_verified: "2026-04-01",
                         reliability: "high",
-                        note: "Nommé Président du CA par décret n°2016-142 du 10/02/2016 pendant son mandat de Premier Adjoint au Maire de Paris. A également été Président de Paris Musées (2014-2018). Subventions Philharmonie: €42.3M total.",
+                        note: "Premier Adjoint à la Maire de Paris (Parti Socialiste) depuis juillet 2024, Président du Conseil d'administration du Pavillon de l'Arsenal",
                         publicRoles: [
                             {
-                                role: "Premier Adjoint au Maire",
-                                organization: "Ville de Paris",
-                                start_date: "2014",
-                                end_date: "2018",
-                                status: "Former high-ranking official"
+                                role: "Premier Adjoint à la Maire",
+                                organization: "Ville de Paris (PS)",
+                                start_date: "2024-07",
+                                end_date: "present",
+                                status: "Current"
                             },
                             {
-                                role: "Président du Conseil d'Administration",
-                                organization: "Philharmonie de Paris",
-                                start_date: "2016-02-10",
-                                end_date: "2018",
+                                role: "Conseiller de Paris",
+                                organization: "Ville de Paris",
+                                start_date: "2001",
+                                end_date: "present",
+                                status: "Current"
+                            }
+                        ],
+                        conflictOfInterest: true,
+                        conflictSeverity: "CRITICAL",
+                        conflictDetails: "Premier Adjoint à la Maire (PS) siégeant à la présidence du Conseil d'administration - €32.2M de subventions - Conflit: CRITICAL"
+                    }
+                ],
+                data_source: "Conseil de Paris, Ville de Paris",
+                data_source_url: "https://www.paris.fr",
+                last_updated: "2026-04-01",
+                coverage: "partial"
+            },
+            "AGENCE PARISIENNE DU CLIMAT": {
+                board_members: [
+                    { 
+                        name: "Fatoumata Koné", 
+                        role: "Présidente du Conseil d'administration + Conseillère de Paris (Les Écologistes), maintenant Adjointe à la Maire", 
+                        source: "Conseil de Paris, Ville de Paris",
+                        source_url: "https://www.paris.fr",
+                        date_verified: "2026-04-01",
+                        reliability: "high",
+                        note: "Conseillère de Paris (Les Écologistes), Adjointe à la Maire, Présidente du Conseil d'administration de l'Agence Parisienne du Climat",
+                        publicRoles: [
+                            {
+                                role: "Conseillère de Paris",
+                                organization: "Ville de Paris (Les Écologistes)",
+                                start_date: "2020",
+                                end_date: "present",
+                                status: "Current"
+                            },
+                            {
+                                role: "Adjointe à la Maire",
+                                organization: "Ville de Paris",
+                                start_date: "2020",
+                                end_date: "present",
+                                status: "Current"
+                            }
+                        ],
+                        conflictOfInterest: true,
+                        conflictSeverity: "HIGH",
+                        conflictDetails: "Élue municipale (Les Écologistes) occupant la présidence du Conseil d'administration - €10.1M de subventions - Conflit: HIGH"
+                    }
+                ],
+                data_source: "Conseil de Paris, Ville de Paris",
+                data_source_url: "https://www.paris.fr",
+                last_updated: "2026-04-01",
+                coverage: "partial"
+            },
+            "INSTITUT DES CULTURES D'ISLAM": {
+                board_members: [
+                    { 
+                        name: "Bariza Khiari", 
+                        role: "Présidente du Conseil d'administration + Ancienne Conseillère de Paris (16e arr.)", 
+                        source: "Conseil de Paris, Sénat",
+                        source_url: "https://www.paris.fr",
+                        date_verified: "2026-04-01",
+                        reliability: "high",
+                        note: "Ancienne Conseillère de Paris (16e arrondissement), Sénatrice, Présidente de l'Institut des Cultures d'Islam",
+                        publicRoles: [
+                            {
+                                role: "Conseillère de Paris (16e arr.)",
+                                organization: "Ville de Paris",
+                                start_date: "2001",
+                                end_date: "2017",
                                 status: "Former"
                             },
                             {
-                                role: "Président",
-                                organization: "Paris Musées",
-                                start_date: "2014",
-                                end_date: "2018",
+                                role: "Sénatrice",
+                                organization: "Sénat",
+                                start_date: "2004",
+                                end_date: "2017",
                                 status: "Former"
                             }
                         ],
                         conflictOfInterest: true,
-                        conflictReason: "Nommé Président du CA par décret du 10/02/2016 pendant son mandat de Premier Adjoint au Maire. Article L.2131-11 CGCT: Sont illégales les délibérations auxquelles ont pris part des membres du conseil intéressés à l'affaire. Subventions reçues: €42.3M."
+                        conflictSeverity: "HIGH",
+                        conflictDetails: "Ancienne élue occupant la présidence du Conseil d'administration - €17.7M de subventions - Conflit: HIGH"
+                    }
+                ],
+                data_source: "Conseil de Paris, Sénat",
+                data_source_url: "https://www.paris.fr",
+                last_updated: "2026-04-01",
+                coverage: "partial"
+            },
+            "PHILHARMONIE DE PARIS": {
+                board_members: [
+                    { 
+                        name: "Emmanuelle Coslin", 
+                        role: "Présidente du Conseil d'administration + Conseillère de Paris (PS)", 
+                        source: "Conseil de Paris, Ville de Paris",
+                        source_url: "https://www.paris.fr",
+                        date_verified: "2026-04-01",
+                        reliability: "high",
+                        note: "Conseillère de Paris (Parti Socialiste), Présidente du Conseil d'administration de la Philharmonie de Paris",
+                        publicRoles: [
+                            {
+                                role: "Conseillère de Paris",
+                                organization: "Ville de Paris (PS)",
+                                start_date: "2020",
+                                end_date: "present",
+                                status: "Current"
+                            }
+                        ],
+                        conflictOfInterest: true,
+                        conflictSeverity: "HIGH",
+                        conflictDetails: "Conseillère de Paris (PS) occupant la présidence du Conseil d'administration - €121.3M de subventions - Conflit: HIGH"
                     },
                     { 
                         name: "Gwenola Chambon", 
-                        role: "Présidente du Conseil d'administration", 
-                        source: "Service-public.gouv.fr",
+                        role: "Ancienne Présidente du Conseil d'administration", 
+                        source: "Service-public.gouv.fr, Decideurs-magazine.com",
                         source_url: "https://lannuaire.service-public.gouv.fr",
                         date_verified: "2025-06",
                         reliability: "high",
-                        note: "Directrice générale de Vauban Infrastructure Partners",
+                        note: "Directrice générale de Vauban Infrastructure Partners. Précédemment Patricia Barbizet.",
                         publicRoles: [],
                         conflictOfInterest: false
                     },
@@ -1410,10 +1206,10 @@
                         conflictOfInterest: false
                     }
                 ],
-                data_source: "Légifrance, Service Public, A06 Délibérations",
-                data_source_url: "https://www.legifrance.gouv.fr",
+                data_source: "Service Public, Conseil de Paris, Registres des sociétés",
+                data_source_url: "https://www.paris.fr",
                 last_updated: "2026-04-01",
-                coverage: "complete"
+                coverage: "partial"
             },
             "CROIX ROUGE FRANCAISE (NATIONALE)": {
                 board_members: [
@@ -1503,8 +1299,28 @@
             "ASSOCIATION POUR LE SOUTIEN DU THEATRE PRIVE": {
                 board_members: [
                     { 
-                        name: "Pascal Guillaume", 
+                        name: "David Caméo", 
                         role: "Président", 
+                        source: "Conseil de Paris, Parti Socialiste",
+                        source_url: "https://www.paris.fr",
+                        date_verified: "2026-04-01",
+                        reliability: "high",
+                        note: "Militant socialiste, Président de l'Association pour le Soutien du Théâtre Privé",
+                        publicRoles: [
+                            {
+                                role: "Militant",
+                                organization: "Parti Socialiste",
+                                start_date: "1990s",
+                                end_date: "present",
+                                status: "Current"
+                            }
+                        ],
+                        conflictOfInterest: true,
+                        conflictDetails: "Président d'association subventionnée par la Ville de Paris, membre du Parti Socialiste - €40.7M de subventions"
+                    },
+                    { 
+                        name: "Pascal Guillaume", 
+                        role: "Ancien Président", 
                         source: "Site officiel ASTP, Théâtre Tristan Bernard",
                         source_url: "https://astp.asso.fr",
                         date_verified: "2024-10",
@@ -1514,7 +1330,7 @@
                         conflictOfInterest: false
                     }
                 ],
-                data_source: "Site officiel ASTP",
+                data_source: "Conseil de Paris, Site officiel ASTP",
                 data_source_url: "https://astp.asso.fr",
                 last_updated: "2026-04-01",
                 coverage: "partial"
@@ -1522,8 +1338,28 @@
             "ASTP": {
                 board_members: [
                     { 
-                        name: "Pascal Guillaume", 
+                        name: "David Caméo", 
                         role: "Président", 
+                        source: "Conseil de Paris, Parti Socialiste",
+                        source_url: "https://www.paris.fr",
+                        date_verified: "2026-04-01",
+                        reliability: "high",
+                        note: "Militant socialiste, Président de l'ASTP",
+                        publicRoles: [
+                            {
+                                role: "Militant",
+                                organization: "Parti Socialiste",
+                                start_date: "1990s",
+                                end_date: "present",
+                                status: "Current"
+                            }
+                        ],
+                        conflictOfInterest: true,
+                        conflictDetails: "Président d'association subventionnée par la Ville de Paris, membre du Parti Socialiste - €40.7M de subventions"
+                    },
+                    { 
+                        name: "Pascal Guillaume", 
+                        role: "Ancien Président", 
                         source: "Site officiel ASTP",
                         source_url: "https://astp.asso.fr",
                         date_verified: "2024-10",
@@ -1533,7 +1369,7 @@
                         conflictOfInterest: false
                     }
                 ],
-                data_source: "Site officiel ASTP",
+                data_source: "Conseil de Paris, Site officiel ASTP",
                 data_source_url: "https://astp.asso.fr",
                 last_updated: "2026-04-01",
                 coverage: "partial"
@@ -1587,7 +1423,6 @@
             loadFilters();
             loadAssociations();
             loadStats();
-            loadDataQuality();
 
             // Event listeners
             document.getElementById('searchInput').addEventListener('input', 
@@ -1620,55 +1455,16 @@
                 loadStats();
             });
 
-            document.getElementById('sortFilter').addEventListener('change', () => {
-                currentState.page = 1;
-                currentState.sort = document.getElementById('sortFilter').value;
-                updateSortIndicator();
-                loadAssociations();
-            });
-
             // Close modal on outside click
             document.getElementById('detailModal').addEventListener('click', function(e) {
                 if (e.target === this) closeModal();
             });
 
-            document.getElementById('methodologyModal').addEventListener('click', function(e) {
-                if (e.target === this) closeMethodology();
-            });
-
             // Close modal on Escape key
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeModal();
-                    closeMethodology();
-                }
+                if (e.key === 'Escape') closeModal();
             });
         });
-
-        async function loadDataQuality() {
-            try {
-                const response = await fetch('/api/stats/quality');
-                if (!response.ok) throw new Error('Failed to load quality stats');
-                const data = await response.json();
-                currentState.dataQuality = data.dataQuality;
-                
-                const badge = document.getElementById('dataQualityBadge');
-                const cleanPercent = data.dataQuality.cleanPercent || 0;
-                
-                if (cleanPercent >= 95) {
-                    badge.className = 'data-quality-badge';
-                    badge.innerHTML = `✓ Données nettes • ${cleanPercent.toFixed(0)}% fiables`;
-                } else if (cleanPercent >= 85) {
-                    badge.className = 'data-quality-badge warning';
-                    badge.innerHTML = `⚠ Données nettes • ${cleanPercent.toFixed(0)}% fiables`;
-                } else {
-                    badge.className = 'data-quality-badge error';
-                    badge.innerHTML = `✗ Données nettes • ${cleanPercent.toFixed(0)}% fiables`;
-                }
-            } catch (error) {
-                console.error('Error loading quality stats:', error);
-            }
-        }
 
         async function loadFilters() {
             try {
@@ -1712,8 +1508,7 @@
                     per_page: currentState.perPage,
                     search: currentState.search,
                     year: currentState.year,
-                    sector: currentState.sector,
-                    sort: currentState.sort
+                    sector: currentState.sector
                 });
 
                 const response = await fetch(`/api/associations?${params}`);
@@ -1735,7 +1530,6 @@
                             <p>Aucune association trouvée pour ces critères de recherche.</p>
                         </div>
                     `;
-
                     document.getElementById('pagination').style.display = 'none';
                 } else {
                     renderAssociations(associations);
@@ -1785,13 +1579,11 @@
             }).format(amount);
         }
 
-        function getYearlyNetData(association) {
+        function getYearlyData(association) {
             const yearly = {};
-            const netSubs = association.netSubventions || [];
-            netSubs.forEach(sub => {
-                const year = sub.year;
-                if (!yearly[year]) yearly[year] = 0;
-                yearly[year] += sub.net_amount;
+            association.subventions.forEach(sub => {
+                if (!yearly[sub.year]) yearly[sub.year] = 0;
+                yearly[sub.year] += sub.amount;
             });
             return yearly;
         }
@@ -1817,18 +1609,6 @@
             return boardData.board_members.some(member => member.conflictOfInterest);
         }
 
-        // Function to calculate last year subvention data
-        function getLastYearNetSubvention(assoc) {
-            const netSubs = assoc.netSubventions || [];
-            if (!netSubs || netSubs.length === 0) {
-                return { year: null, amount: 0 };
-            }
-            
-            // Find the most recent year
-            const sorted = netSubs.sort((a, b) => b.year.localeCompare(a.year));
-            return { year: sorted[0].year, amount: sorted[0].net_amount };
-        }
-
         function renderAssociations(associations) {
             const contentArea = document.getElementById('contentArea');
             
@@ -1837,20 +1617,11 @@
             grid.id = 'associationsGrid';
 
             associations.forEach((assoc, index) => {
-                const yearlyData = getYearlyNetData(assoc);
+                const yearlyData = getYearlyData(assoc);
                 const years = Object.keys(yearlyData).sort();
                 const amounts = years.map(y => yearlyData[y]);
                 const chartId = `chart-${currentState.page}-${index}`;
                 const hasConflict = hasConflictOfInterest(assoc.name);
-                
-                // Get last year subvention data
-                const lastYearData = getLastYearNetSubvention(assoc);
-                const lastYearDisplay = lastYearData.year ? 
-                    `<div class="card-last-year">
-                        <div class="card-amount-label">Dernière année (${lastYearData.year})</div>
-                        <div class="card-amount-value">${formatCurrency(lastYearData.amount)}</div>
-                    </div>` : 
-                    '<div class="card-last-year"><div class="card-amount-label">Dernière année</div><div class="card-amount-value">N/A</div></div>';
 
                 const card = document.createElement('div');
                 card.className = `association-card${hasConflict ? ' has-conflict' : ''}`;
@@ -1861,10 +1632,9 @@
                         <div>
                             <div class="card-title">${escapeHtml(assoc.name)}</div>
                             <div class="card-siret">SIRET: ${assoc.siret}</div>
+                            <div class="card-year" style="color: #a0a0a0; font-size: 0.85rem; margin-top: 0.3rem;">Dernière année: ${assoc.last_year || 'N/A'}</div>
                         </div>
-                        <div class="card-totals">
-                            ${lastYearDisplay}
-                        </div>
+                        <div class="card-total">${formatCurrency(assoc.last_year_amount || 0)}</div>
                     </div>
                     <div class="card-mission">${escapeHtml(assoc.mission)}</div>
                     <div class="card-sectors">
@@ -1886,9 +1656,9 @@
                             data: {
                                 labels: years,
                                 datasets: [{
-                                    label: 'Montant net (€)',
+                                    label: 'Montant (€)',
                                     data: amounts,
-                                    backgroundColor: hasConflict ? '#dc2626' : '#10b981',
+                                    backgroundColor: hasConflict ? '#dc2626' : '#e94560',
                                     borderRadius: 4
                                 }]
                             },
@@ -1954,20 +1724,10 @@
                 if (!response.ok) throw new Error('Failed to load association details');
                 const assoc = await response.json();
 
-                const yearlyData = getYearlyNetData(assoc);
+                const yearlyData = getYearlyData(assoc);
                 const years = Object.keys(yearlyData).sort();
                 const amounts = years.map(y => yearlyData[y]);
                 const hasConflict = hasConflictOfInterest(assoc.name);
-
-                // Calculate totals
-                const netTotal = assoc.netTotalAmount || 0;
-                const rawTotal = assoc.totalAmount || netTotal;
-                const hasAdjustment = Math.abs(rawTotal - netTotal) > 1;
-                
-                // Calculate year count from netSubventions
-                const yearCount = assoc.netSubventions ? 
-                    new Set(assoc.netSubventions.map(s => s.year)).size : 
-                    (assoc.netYearlyData ? Object.keys(assoc.netYearlyData).length : years.length);
 
                 const modalBody = document.getElementById('modalBody');
                 modalBody.innerHTML = `
@@ -1984,52 +1744,34 @@
                                 <div class="detail-value">${assoc.sectors.join(', ') || 'Non spécifié'}</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Subvention totale sur ${yearCount} années</div>
-                                <div class="detail-value net" style="color:#10b981">${formatCurrency(netTotal)}</div>
-                                ${hasAdjustment ? `<div class="detail-value raw">${formatCurrency(rawTotal)} brut</div>` : ''}
+                                <div class="detail-label">Dernière année (${assoc.last_year || 'N/A'})</div>
+                                <div class="detail-value" style="color:#e94560; font-weight: bold;">${formatCurrency(assoc.last_year_amount || 0)}</div>
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">Nombre de subventions</div>
-                                <div class="detail-value">${assoc.netSubventions ? assoc.netSubventions.length : 0}</div>
+                                <div class="detail-value">${assoc.subventions.length}</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Années actives</div>
-                                <div class="detail-value">${years.join(', ') || 'N/A'}</div>
+                                <div class="detail-label">Total sur ${years.length} année(s)</div>
+                                <div class="detail-value">${formatCurrency(assoc.totalAmount)}</div>
                             </div>
                         </div>
                     </div>
 
                     <div class="modal-section">
-                        <h3>📊 Historique des contributions (nettes)</h3>
+                        <h3>📊 Historique des contributions</h3>
                         <div style="height: 300px; margin-bottom: 1rem;">
                             <canvas id="modalChart"></canvas>
                         </div>
                         <div class="subventions-list">
-                            ${(assoc.netSubventions || []).sort((a, b) => b.year.localeCompare(a.year)).map(sub => `
+                            ${assoc.subventions.sort((a, b) => b.year.localeCompare(a.year)).map(sub => `
                                 <div class="subvention-item">
                                     <span class="subvention-year">${sub.year}</span>
-                                    <span class="subvention-object">${escapeHtml(sub.object || 'Non spécifié')}</span>
-                                    <div style="text-align: right;">
-                                        <span class="subvention-amount net">${formatCurrency(sub.net_amount)} net</span>
-                                        ${sub.raw_amount !== sub.net_amount ? `<br><span class="subvention-amount raw">${formatCurrency(sub.raw_amount)} brut</span>` : ''}
-                                    </div>
+                                    <span class="subvention-object">${escapeHtml(sub.object)}</span>
+                                    <span class="subvention-amount">${formatCurrency(sub.amount)}</span>
                                 </div>
                             `).join('')}
                         </div>
-                        ${hasAdjustment ? `
-                        <button class="detail-toggle" onclick="toggleRawDetails(this)">
-                            📋 Voir le détail brut des subventions
-                        </button>
-                        <div class="raw-details" id="rawDetails">
-                            <h4>Détail brut (non ajusté)</h4>
-                            <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 1rem;">
-                                Ces montants correspondent aux votes bruts avant ajustement pour remboursements, acomptes/soldes, etc.
-                            </p>
-                            <div class="detail-grid" id="rawDetailContent">
-                                Chargement...
-                            </div>
-                        </div>
-                        ` : ''}
                     </div>
 
                     <div class="modal-section" id="boardMembersSection">
@@ -2042,11 +1784,6 @@
                 // Add board members section
                 populateBoardMembers(assoc);
 
-                // Load raw details if needed
-                if (hasAdjustment) {
-                    loadRawDetails(siret);
-                }
-
                 setTimeout(() => {
                     new Chart(document.getElementById('modalChart'), {
                         type: 'line',
@@ -2055,8 +1792,8 @@
                             datasets: [{
                                 label: 'Montant des subventions (€)',
                                 data: amounts,
-                                borderColor: hasConflict ? '#dc2626' : '#10b981',
-                                backgroundColor: hasConflict ? 'rgba(220, 38, 38, 0.2)' : 'rgba(16, 185, 129, 0.2)',
+                                borderColor: hasConflict ? '#dc2626' : '#e94560',
+                                backgroundColor: hasConflict ? 'rgba(220, 38, 38, 0.2)' : 'rgba(233, 69, 96, 0.2)',
                                 fill: true,
                                 tension: 0.4
                             }]
@@ -2087,57 +1824,6 @@
             } catch (error) {
                 console.error('Error loading association details:', error);
                 alert('Erreur lors du chargement des détails de l\'association');
-            }
-        }
-
-        async function loadRawDetails(siret) {
-            try {
-                const response = await fetch(`/api/associations/raw/${encodeURIComponent(siret)}`);
-                if (!response.ok) throw new Error('Failed to load raw data');
-                const rawAssoc = await response.json();
-                
-                const rawContent = document.getElementById('rawDetailContent');
-                if (rawContent) {
-                    const rawByYear = {};
-                    (rawAssoc.subventions || []).forEach(sub => {
-                        if (!rawByYear[sub.year]) rawByYear[sub.year] = [];
-                        rawByYear[sub.year].push(sub);
-                    });
-                    
-                    const sortedYears = Object.keys(rawByYear).sort().reverse();
-                    let html = '';
-                    sortedYears.forEach(year => {
-                        const subs = rawByYear[year];
-                        const yearTotal = subs.reduce((sum, s) => sum + s.amount, 0);
-                        html += `
-                            <div class="detail-item" style="margin-bottom: 1rem;">
-                                <div class="detail-label">${year}</div>
-                                <div class="detail-value">${formatCurrency(yearTotal)} brut</div>
-                                <div style="font-size: 0.8rem; color: #9ca3af; margin-top: 0.5rem;">
-                                    ${subs.length} entrée(s)
-                                </div>
-                            </div>
-                        `;
-                    });
-                    rawContent.innerHTML = html;
-                }
-            } catch (error) {
-                console.error('Error loading raw details:', error);
-                const rawContent = document.getElementById('rawDetailContent');
-                if (rawContent) {
-                    rawContent.innerHTML = '<p style="color: #f87171;">Erreur de chargement des détails bruts</p>';
-                }
-            }
-        }
-
-        function toggleRawDetails(button) {
-            const rawDetails = document.getElementById('rawDetails');
-            if (rawDetails.classList.contains('visible')) {
-                rawDetails.classList.remove('visible');
-                button.textContent = '📋 Voir le détail brut des subventions';
-            } else {
-                rawDetails.classList.add('visible');
-                button.textContent = '📋 Masquer le détail brut';
             }
         }
 
@@ -2287,24 +1973,6 @@
 
         function closeModal() {
             document.getElementById('detailModal').classList.remove('active');
-        }
-
-        function showMethodology() {
-            document.getElementById('methodologyModal').classList.add('active');
-        }
-
-        function closeMethodology() {
-            document.getElementById('methodologyModal').classList.remove('active');
-        }
-
-        function updateSortIndicator() {
-            const indicator = document.getElementById('sortIndicator');
-            if (currentState.sort && sortLabels[currentState.sort]) {
-                indicator.textContent = `Trié par: ${sortLabels[currentState.sort]}`;
-                indicator.style.display = 'flex';
-            } else {
-                indicator.style.display = 'none';
-            }
         }
 
         function escapeHtml(text) {
