@@ -959,7 +959,7 @@
 <body>
     <div class="header">
         <h1>🏛️ Paris Subventions</h1>
-        <p>Suivi transparent des contributions municipales aux associations - Subventions nettes calculées</p>
+        <p>Suivi transparent des contributions municipales aux associations - Subventions calculées</p>
     </div>
 
     <div class="stats-bar">
@@ -969,7 +969,7 @@
         </div>
         <div class="stat-item">
             <div class="stat-value" id="totalSubventions">-</div>
-            <div class="stat-label">Subventions (nettes)</div>
+            <div class="stat-label">Subventions</div>
         </div>
         <div class="stat-item">
             <div class="stat-value" id="totalAmount">-</div>
@@ -990,7 +990,7 @@
             <div class="info-bar-left">
                 <div class="net-indicator">Données nettes</div>
                 <span style="color: #a0a0a0; font-size: 0.9rem;">
-                    Les montants affichés sont des <strong>subventions nettes</strong> (ajustées pour les remboursements, acomptes/soldes, etc.)
+                    Les montants affichés sont des <strong>subventions</strong> (ajustées pour les remboursements, acomptes/soldes, etc.)
                 </span>
             </div>
             <a class="methodology-link" onclick="showMethodology()">📖 Voir la méthodologie de calcul</a>
@@ -1052,7 +1052,7 @@
         <div class="modal-content">
             <button class="modal-close" onclick="closeMethodology()">×</button>
             <div class="modal-header">
-                <div class="modal-title">📖 Méthodologie de calcul des subventions nettes</div>
+                <div class="modal-title">📖 Méthodologie de calcul des subventions</div>
             </div>
             <div class="modal-section">
                 <h3>🎯 Objectif</h3>
@@ -1796,7 +1796,7 @@
                         </div>
                         <div class="card-totals">
                             <div class="card-total net">
-                                <div class="card-amount-label">Subvention nette</div>
+                                <div class="card-amount-label">Subvention</div>
                                 <div class="card-amount-value">${formatCurrency(netTotal)}</div>
                             </div>
                             ${hasAdjustment ? `
@@ -1920,7 +1920,7 @@
                                 <div class="detail-value">${assoc.sectors.join(', ') || 'Non spécifié'}</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Subvention nette totale</div>
+                                <div class="detail-label">Subvention totale</div>
                                 <div class="detail-value net" style="color:#10b981">${formatCurrency(netTotal)}</div>
                                 ${hasAdjustment ? `<div class="detail-value raw">${formatCurrency(rawTotal)} brut</div>` : ''}
                             </div>
@@ -1989,7 +1989,7 @@
                         data: {
                             labels: years,
                             datasets: [{
-                                label: 'Montant net des subventions (€)',
+                                label: 'Montant des subventions (€)',
                                 data: amounts,
                                 borderColor: hasConflict ? '#dc2626' : '#10b981',
                                 backgroundColor: hasConflict ? 'rgba(220, 38, 38, 0.2)' : 'rgba(16, 185, 129, 0.2)',
