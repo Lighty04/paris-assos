@@ -128,6 +128,16 @@ def load_data(force_reload=False):
             associations[siret]['totalAmount'] = sum(
                 s['amount'] for s in associations[siret]['subventions']
             )
+            
+            # Calculate last_year and last_year_amount from netSubventions
+            assoc = associations[siret]
+            if assoc.get('netSubventions'):
+                last_entry = max(assoc['netSubventions'], key=lambda x: x['year'])
+                assoc['last_year'] = last_entry['year']
+                assoc['last_year_amount'] = last_entry['net_amount']
+            else:
+                assoc['last_year'] = None
+                assoc['last_year_amount'] = 0
         
         # Sort by net total amount descending (primary display metric)
         DATA_CACHE = sorted(associations.values(), key=lambda x: x.get('netTotalAmount', x['totalAmount']), reverse=True)

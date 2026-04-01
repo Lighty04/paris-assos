@@ -19,10 +19,10 @@ class Config:
     DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 'yes')
     
     # Data file path (configurable for different environments)
-    DATA_FILE = os.environ.get('DATA_FILE', '/home/decisionhelper/website/data_net.json')
+    DATA_FILE = os.environ.get('DATA_FILE', '/home/openclaw/.openclaw/workspace/paris-assos-website/data_net.json')
     
     # Static files
-    STATIC_FOLDER = os.environ.get('STATIC_FOLDER', '/home/decisionhelper/website')
+    STATIC_FOLDER = os.environ.get('STATIC_FOLDER', '/home/openclaw/.openclaw/workspace/paris-assos-website')
     
     # Caching settings
     CACHE_TYPE = os.environ.get('CACHE_TYPE', 'SimpleCache')

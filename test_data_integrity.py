@@ -209,6 +209,36 @@ def test_top_100_display_values(data):
         print(f"✅ PASSED: All {len(associations)} top associations have complete display values")
         return True
 
+def test_data_has_last_year_fields(data):
+    """Test 6: Verify data file contains last_year and last_year_amount fields"""
+    print("\n[TEST 6] Checking for last_year and last_year_amount fields in data file...")
+    errors = []
+    
+    associations = data.get('associations', [])
+    
+    for assoc in associations:
+        name = assoc.get('name', 'Unknown')
+        siret = assoc.get('siret', 'No SIRET')
+        
+        # Check if last_year field exists
+        if 'last_year' not in assoc:
+            errors.append(f"Missing 'last_year' field for {name} ({siret})")
+        
+        # Check if last_year_amount field exists
+        if 'last_year_amount' not in assoc:
+            errors.append(f"Missing 'last_year_amount' field for {name} ({siret})")
+    
+    if errors:
+        print(f"❌ FAILED: {len(errors)} associations missing last_year fields")
+        for err in errors[:20]:
+            print(f"   - {err}")
+        if len(errors) > 20:
+            print(f"   ... and {len(errors) - 20} more")
+        return False
+    else:
+        print(f"✅ PASSED: All {len(associations)} associations have last_year fields")
+        return True
+
 def run_all_tests():
     """Run all QA tests"""
     print("=" * 60)
@@ -229,6 +259,7 @@ def run_all_tests():
     results.append(test_all_associations_have_subventions_history(data))
     results.append(test_data_consistency(data))
     results.append(test_top_100_display_values(data))
+    results.append(test_data_has_last_year_fields(data))
     
     print("\n" + "=" * 60)
     print("TEST SUMMARY")
