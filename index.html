@@ -1779,11 +1779,6 @@
                     </div>` : 
                     '<div class="card-last-year"><div class="card-amount-label">Dernière année</div><div class="card-amount-value">N/A</div></div>';
 
-                // Calculate raw total for comparison
-                const rawTotal = assoc.totalAmount || assoc.netTotalAmount;
-                const netTotal = assoc.netTotalAmount || 0;
-                const hasAdjustment = rawTotal !== netTotal;
-
                 const card = document.createElement('div');
                 card.className = `association-card${hasConflict ? ' has-conflict' : ''}`;
                 card.onclick = () => openModal(assoc.siret);
@@ -1795,15 +1790,6 @@
                             <div class="card-siret">SIRET: ${assoc.siret}</div>
                         </div>
                         <div class="card-totals">
-                            <div class="card-total net">
-                                <div class="card-amount-label">Subvention</div>
-                                <div class="card-amount-value">${formatCurrency(netTotal)}</div>
-                            </div>
-                            ${hasAdjustment ? `
-                            <div class="card-total raw" title="Montant brut avant ajustements">
-                                <div class="card-amount-label">Montant brut</div>
-                                <div class="card-amount-value">${formatCurrency(rawTotal)}</div>
-                            </div>` : ''}
                             ${lastYearDisplay}
                         </div>
                     </div>
@@ -1904,6 +1890,11 @@
                 const netTotal = assoc.netTotalAmount || 0;
                 const rawTotal = assoc.totalAmount || netTotal;
                 const hasAdjustment = Math.abs(rawTotal - netTotal) > 1;
+                
+                // Calculate year count from netSubventions
+                const yearCount = assoc.netSubventions ? 
+                    new Set(assoc.netSubventions.map(s => s.year)).size : 
+                    (assoc.netYearlyData ? Object.keys(assoc.netYearlyData).length : years.length);
 
                 const modalBody = document.getElementById('modalBody');
                 modalBody.innerHTML = `
@@ -1920,7 +1911,7 @@
                                 <div class="detail-value">${assoc.sectors.join(', ') || 'Non spécifié'}</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Subvention totale</div>
+                                <div class="detail-label">Subvention totale sur ${yearCount} années</div>
                                 <div class="detail-value net" style="color:#10b981">${formatCurrency(netTotal)}</div>
                                 ${hasAdjustment ? `<div class="detail-value raw">${formatCurrency(rawTotal)} brut</div>` : ''}
                             </div>
