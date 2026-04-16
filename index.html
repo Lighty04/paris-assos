@@ -252,9 +252,66 @@
             color: #fff;
             font-weight: bold;
         }
+        .siret-link {
+            color: #e94560;
+            text-decoration: underline;
+            transition: color 0.2s ease;
+        }
+        .siret-link:hover {
+            color: #ff6b7d;
+        }
         .subventions-list {
-            max-height: 300px;
-            overflow-y: auto;
+            max-height: none;
+            overflow-y: visible;
+        }
+        .year-section {
+            background: rgba(15, 52, 96, 0.3);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            border: 1px solid rgba(233, 69, 96, 0.2);
+            overflow: hidden;
+        }
+        .year-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            background: rgba(15, 52, 96, 0.5);
+            transition: background 0.2s ease;
+        }
+        .year-header:hover {
+            background: rgba(233, 69, 96, 0.15);
+        }
+        .year-header span:first-child {
+            font-weight: 600;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+        .year-total {
+            color: #e94560;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        .toggle-icon {
+            color: #e94560;
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+            margin-left: 1rem;
+        }
+        .year-section.expanded .toggle-icon {
+            transform: rotate(180deg);
+        }
+        .year-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .year-section.expanded .year-content {
+            max-height: 2000px;
+        }
+        .year-subventions {
+            padding: 0.5rem 1.25rem 1rem;
         }
         .subvention-item {
             background: rgba(15, 52, 96, 0.3);
@@ -1632,9 +1689,8 @@
                         <div>
                             <div class="card-title">${escapeHtml(assoc.name)}</div>
                             <div class="card-siret">SIRET: ${assoc.siret}</div>
-                            <div class="card-year" style="color: #a0a0a0; font-size: 0.85rem; margin-top: 0.3rem;">Dernière année: ${assoc.last_year || 'N/A'}</div>
                         </div>
-                        <div class="card-total">${formatCurrency(assoc.last_year_amount || 0)}</div>
+                        <div class="card-total">${formatCurrency(assoc.totalAmount)}</div>
                     </div>
                     <div class="card-mission">${escapeHtml(assoc.mission)}</div>
                     <div class="card-sectors">
@@ -1733,7 +1789,7 @@
                 modalBody.innerHTML = `
                     <div class="modal-header">
                         <div class="modal-title">${escapeHtml(assoc.name)}</div>
-                        <div class="card-siret">SIRET: ${assoc.siret}</div>
+                        <div class="card-siret">SIRET: <a href="https://www.pappers.fr/entreprise/${assoc.siret}" target="_blank" rel="noopener" class="siret-link">${assoc.siret}</a></div>
                     </div>
 
                     <div class="modal-section">
@@ -1744,16 +1800,15 @@
                                 <div class="detail-value">${assoc.sectors.join(', ') || 'Non spécifié'}</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Dernière année (${assoc.last_year || 'N/A'})</div>
-                                <div class="detail-value" style="color:#e94560; font-weight: bold;">${formatCurrency(assoc.last_year_amount || 0)}</div>
+                                <div class="detail-value" style="color:#e94560">${formatCurrency(assoc.totalAmount)}</div>
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">Nombre de subventions</div>
                                 <div class="detail-value">${assoc.subventions.length}</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Total sur ${years.length} année(s)</div>
-                                <div class="detail-value">${formatCurrency(assoc.totalAmount)}</div>
+                                <div class="detail-label">Années actives</div>
+                                <div class="detail-value">${years.join(', ') || 'N/A'}</div>
                             </div>
                         </div>
                     </div>
@@ -1763,14 +1818,8 @@
                         <div style="height: 300px; margin-bottom: 1rem;">
                             <canvas id="modalChart"></canvas>
                         </div>
-                        <div class="subventions-list">
-                            ${assoc.subventions.sort((a, b) => b.year.localeCompare(a.year)).map(sub => `
-                                <div class="subvention-item">
-                                    <span class="subvention-year">${sub.year}</span>
-                                    <span class="subvention-object">${escapeHtml(sub.object)}</span>
-                                    <span class="subvention-amount">${formatCurrency(sub.amount)}</span>
-                                </div>
-                            `).join('')}
+                        <div class="subventions-list" id="subventionsList">
+                            <!-- Subventions will be populated dynamically -->
                         </div>
                     </div>
 
@@ -1781,7 +1830,8 @@
 
                 document.getElementById('detailModal').classList.add('active');
 
-                // Add board members section
+                // Add subventions list and board members sections
+                populateSubventionsList(assoc);
                 populateBoardMembers(assoc);
 
                 setTimeout(() => {
@@ -1824,6 +1874,66 @@
             } catch (error) {
                 console.error('Error loading association details:', error);
                 alert('Erreur lors du chargement des détails de l\'association');
+            }
+        }
+
+        function populateSubventionsList(association) {
+            const subventionsList = document.getElementById('subventionsList');
+            
+            // Group subventions by year
+            const subventionsByYear = {};
+            association.subventions.forEach(sub => {
+                if (!subventionsByYear[sub.year]) {
+                    subventionsByYear[sub.year] = [];
+                }
+                subventionsByYear[sub.year].push(sub);
+            });
+            
+            // Sort years in descending order
+            const sortedYears = Object.keys(subventionsByYear).sort((a, b) => b.localeCompare(a));
+            
+            if (sortedYears.length === 0) {
+                subventionsList.innerHTML = '<p style="color: #a0a0a0; text-align: center;">Aucune subvention enregistrée</p>';
+                return;
+            }
+            
+            // Generate HTML for collapsible years
+            const html = sortedYears.map((year, index) => {
+                const yearSubventions = subventionsByYear[year];
+                const yearTotal = yearSubventions.reduce((sum, sub) => sum + sub.amount, 0);
+                
+                const subventionsHTML = yearSubventions.map(sub => `
+                    <div class="subvention-item">
+                        <span class="subvention-object">${escapeHtml(sub.object)}</span>
+                        <span class="subvention-amount">${formatCurrency(sub.amount)}</span>
+                    </div>
+                `).join('');
+                
+                return `
+                    <div class="year-section" id="year-section-${year}" data-year="${year}">
+                        <div class="year-header" onclick="toggleYear('${year}')">
+                            <span>${year}</span>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <span class="year-total">${formatCurrency(yearTotal)}</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                        </div>
+                        <div class="year-content" id="year-content-${year}">
+                            <div class="year-subventions">
+                                ${subventionsHTML}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            subventionsList.innerHTML = html;
+        }
+
+        function toggleYear(year) {
+            const section = document.getElementById(`year-section-${year}`);
+            if (section) {
+                section.classList.toggle('expanded');
             }
         }
 

@@ -1,8 +1,28 @@
+# Paris Subventions API - Production Requirements
+# Core framework
 Flask==3.0.3
+
+# Production WSGI server
 gunicorn==23.0.0
+
+# Caching
 Flask-Caching==2.3.0
+
+# Environment variables
 python-dotenv==1.0.1
+
+# Static files serving
 whitenoise==6.8.2
+
+# CORS support
 flask-cors==4.0.2
+
+# Rate limiting (optional but recommended)
 Flask-Limiter==3.8.0
+
+# Logging
 structlog==24.4.0
+
+# Data handling (already in Python stdlib, but explicit for clarity)
+# json - built-in
+# os - built-in
